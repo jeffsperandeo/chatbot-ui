@@ -1,0 +1,58 @@
+{
+    "sourceFile": "backend/utils/axiosConfig.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 10,
+            "patches": [
+                {
+                    "date": 1717795438311,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1717795524462,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,12 +1,26 @@\n // utils/axiosConfig.js\n import axios from 'axios';\n+import { getAuthToken } from './authService'; // Assuming you have a service to get the auth token\n \n const axiosInstance = axios.create({\n-    baseURL: 'https://your-api-url.com', // Replace with your API base URL\n+    baseURL: 'https://api.tekmetrics.com', // Replace with your actual API base URL\n     headers: {\n         'Content-Type': 'application/json',\n-        'Authorization': `Bearer ${yourAuthToken}` // Replace with your auth token logic\n     }\n });\n \n+// Request interceptor to add auth token to headers\n+axiosInstance.interceptors.request.use(\n+    async (config) => {\n+        const token = await getAuthToken(); // Fetch the token using your auth service\n+        if (token) {\n+            config.headers.Authorization = `Bearer ${token}`;\n+        }\n+        return config;\n+    },\n+    (error) => {\n+        return Promise.reject(error);\n+    }\n+);\n+\n export default axiosInstance;\n"
+                },
+                {
+                    "date": 1717795920566,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,5 +22,5 @@\n         return Promise.reject(error);\n     }\n );\n \n-export default axiosInstance;\n+export default axiosInstance;\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1717795989043,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n // utils/axiosConfig.js\n-import axios from 'axios';\n-import { getAuthToken } from './authService'; // Assuming you have a service to get the auth token\n+const axios = require('axios');\n+const { getAuthToken } = require('./authService'); // Assuming you have a service to get the auth token\n \n const axiosInstance = axios.create({\n     baseURL: 'https://api.tekmetrics.com', // Replace with your actual API base URL\n     headers: {\n@@ -22,5 +22,5 @@\n         return Promise.reject(error);\n     }\n );\n \n-export default axiosInstance;\n\\ No newline at end of file\n+module.exports = axiosInstance;\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1717796036024,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n // utils/axiosConfig.js\n const axios = require('axios');\n-const { getAuthToken } = require('./authService'); // Assuming you have a service to get the auth token\n+const { getAuthToken } = require('../authService'); // Assuming the authService.js file is located in the parent directory\n \n const axiosInstance = axios.create({\n     baseURL: 'https://api.tekmetrics.com', // Replace with your actual API base URL\n     headers: {\n"
+                },
+                {
+                    "date": 1717796522246,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n // utils/axiosConfig.js\n-const axios = require('axios');\n-const { getAuthToken } = require('../authService'); // Assuming the authService.js file is located in the parent directory\n+import axios from 'axios';\n+import { getAuthToken } from './authService'; // Assuming you have a service to get the auth token\n \n const axiosInstance = axios.create({\n     baseURL: 'https://api.tekmetrics.com', // Replace with your actual API base URL\n     headers: {\n@@ -22,5 +22,5 @@\n         return Promise.reject(error);\n     }\n );\n \n-module.exports = axiosInstance;\n\\ No newline at end of file\n+export default axiosInstance;\n"
+                },
+                {
+                    "date": 1717796640657,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n // utils/axiosConfig.js\n-import axios from 'axios';\n-import { getAuthToken } from './authService'; // Assuming you have a service to get the auth token\n+const axios = require('axios');\n+const { getAuthToken } = require('../authService'); // Assuming the authService.js file is located in the parent directory\n \n const axiosInstance = axios.create({\n     baseURL: 'https://api.tekmetrics.com', // Replace with your actual API base URL\n     headers: {\n@@ -22,5 +22,5 @@\n         return Promise.reject(error);\n     }\n );\n \n-export default axiosInstance;\n+module.exports = axiosInstance;\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1717796660811,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n // utils/axiosConfig.js\n-const axios = require('axios');\n-const { getAuthToken } = require('../authService'); // Assuming the authService.js file is located in the parent directory\n+import axios from 'axios';\n+import { getAuthToken } from './authService'; // Assuming you have a service to get the auth token\n \n const axiosInstance = axios.create({\n     baseURL: 'https://api.tekmetrics.com', // Replace with your actual API base URL\n     headers: {\n@@ -22,5 +22,5 @@\n         return Promise.reject(error);\n     }\n );\n \n-module.exports = axiosInstance;\n\\ No newline at end of file\n+export default axiosInstance;\n"
+                },
+                {
+                    "date": 1717796714112,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n // utils/axiosConfig.js\n-import axios from 'axios';\n-import { getAuthToken } from './authService'; // Assuming you have a service to get the auth token\n+const axios = require('axios');\n+const { getAuthToken } = require('./authService'); // Assuming you have a service to get the auth token\n \n const axiosInstance = axios.create({\n     baseURL: 'https://api.tekmetrics.com', // Replace with your actual API base URL\n     headers: {\n@@ -22,5 +22,5 @@\n         return Promise.reject(error);\n     }\n );\n \n-export default axiosInstance;\n+module.exports = axiosInstance;\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1717796813622,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,8 @@\n-// utils/axiosConfig.js\n+// backend/utils/axiosConfig.js\n+\n const axios = require('axios');\n-const { getAuthToken } = require('./authService'); // Assuming you have a service to get the auth token\n+const { getAuthToken } = require('../services/authService'); // Import the getAuthToken function from the authService module\n \n const axiosInstance = axios.create({\n     baseURL: 'https://api.tekmetrics.com', // Replace with your actual API base URL\n     headers: {\n"
+                },
+                {
+                    "date": 1717798393145,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,27 +1,4 @@\n-// backend/utils/axiosConfig.js\n+// utils/axiosConfig.js\n+const { tekmetricsApi } = require('../services/tekmetricService');\n \n-const axios = require('axios');\n-const { getAuthToken } = require('../services/authService'); // Import the getAuthToken function from the authService module\n-\n-const axiosInstance = axios.create({\n-    baseURL: 'https://api.tekmetrics.com', // Replace with your actual API base URL\n-    headers: {\n-        'Content-Type': 'application/json',\n-    }\n-});\n-\n-// Request interceptor to add auth token to headers\n-axiosInstance.interceptors.request.use(\n-    async (config) => {\n-        const token = await getAuthToken(); // Fetch the token using your auth service\n-        if (token) {\n-            config.headers.Authorization = `Bearer ${token}`;\n-        }\n-        return config;\n-    },\n-    (error) => {\n-        return Promise.reject(error);\n-    }\n-);\n\\ No newline at end of file\n-\n-module.exports = axiosInstance;\n+module.exports = tekmetricsApi;\n"
+                }
+            ],
+            "date": 1717795438311,
+            "name": "Commit-0",
+            "content": "// utils/axiosConfig.js\nimport axios from 'axios';\n\nconst axiosInstance = axios.create({\n    baseURL: 'https://your-api-url.com', // Replace with your API base URL\n    headers: {\n        'Content-Type': 'application/json',\n        'Authorization': `Bearer ${yourAuthToken}` // Replace with your auth token logic\n    }\n});\n\nexport default axiosInstance;\n"
+        }
+    ]
+}

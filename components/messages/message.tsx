@@ -23,6 +23,7 @@ import { TextareaAutosize } from "../ui/textarea-autosize"
 import { WithTooltip } from "../ui/with-tooltip"
 import { MessageActions } from "./message-actions"
 import { MessageMarkdown } from "./message-markdown"
+import { handleUserInput } from "/Users/jeffsperandeo/Projects/chatbot-ui-fed/backend/utils/chatHandler.js"
 
 const ICON_SIZE = 32
 
@@ -68,6 +69,7 @@ export const Message: FC<MessageProps> = ({
 
   const [isHovering, setIsHovering] = useState(false)
   const [editedMessage, setEditedMessage] = useState(message.content)
+  const [responseMessage, setResponseMessage] = useState<string | null>(null)
 
   const [showImagePreview, setShowImagePreview] = useState(false)
   const [selectedImage, setSelectedImage] = useState<MessageImage | null>(null)
@@ -125,6 +127,16 @@ export const Message: FC<MessageProps> = ({
       input.setSelectionRange(input.value.length, input.value.length)
     }
   }, [isEditing])
+
+  useEffect(() => {
+    const executeCommand = async () => {
+      if (message.role === "user" && !isEditing) {
+        const response = await handleUserInput(message.content)
+        setResponseMessage(response)
+      }
+    }
+    executeCommand()
+  }, [message.content, isEditing])
 
   const MODEL_DATA = [
     ...models.map(model => ({
@@ -208,7 +220,6 @@ export const Message: FC<MessageProps> = ({
                 className="border-primary bg-primary text-secondary rounded border-DEFAULT p-1"
                 size={ICON_SIZE}
               />
-
               <div className="text-lg font-semibold">Prompt</div>
             </div>
           ) : (
@@ -252,7 +263,6 @@ export const Message: FC<MessageProps> = ({
                   size={ICON_SIZE}
                 />
               )}
-
               <div className="font-semibold">
                 {message.role === "assistant"
                   ? message.assistant_id
@@ -281,7 +291,6 @@ export const Message: FC<MessageProps> = ({
                     return (
                       <div className="flex animate-pulse items-center space-x-2">
                         <IconFileText size={20} />
-
                         <div>Searching files...</div>
                       </div>
                     )
@@ -289,7 +298,6 @@ export const Message: FC<MessageProps> = ({
                     return (
                       <div className="flex animate-pulse items-center space-x-2">
                         <IconBolt size={20} />
-
                         <div>Using {toolInUse}...</div>
                       </div>
                     )
@@ -305,7 +313,10 @@ export const Message: FC<MessageProps> = ({
               maxRows={20}
             />
           ) : (
-            <MessageMarkdown content={message.content} />
+            <>
+              <MessageMarkdown content={message.content} />
+              {responseMessage && <MessageMarkdown content={responseMessage} />}
+            </>
           )}
         </div>
 
@@ -334,7 +345,6 @@ export const Message: FC<MessageProps> = ({
                   {Object.keys(fileSummary).length > 1 ? "Files" : "File"}{" "}
                   <IconCaretDownFilled className="ml-1" />
                 </div>
-
                 <div className="mt-3 space-y-4">
                   {Object.values(fileSummary).map((file, index) => (
                     <div key={index}>
@@ -342,10 +352,8 @@ export const Message: FC<MessageProps> = ({
                         <div>
                           <FileIcon type={file.type} />
                         </div>
-
                         <div className="truncate">{file.name}</div>
                       </div>
-
                       {fileItems
                         .filter(fileItem => {
                           const parentFile = files.find(
@@ -409,7 +417,6 @@ export const Message: FC<MessageProps> = ({
             <Button size="sm" onClick={handleSendEdit}>
               Save & Send
             </Button>
-
             <Button size="sm" variant="outline" onClick={onCancelEdit}>
               Cancel
             </Button>

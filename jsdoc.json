@@ -1,0 +1,20 @@
+{
+    "tags": {
+      "allowUnknownTags": true,
+      "dictionaries": ["jsdoc"]
+    },
+    "source": {
+      "include": ["app", "lib", "types"],
+      "includePattern": ".+\\.(ts|tsx)$",
+      "excludePattern": "(node_modules/|docs)"
+    },
+    "plugins": ["node_modules/jsdoc-babel"],
+    "babel": {
+      "extensions": ["ts", "tsx"],
+      "presets": ["@babel/preset-typescript"]
+    },
+    "opts": {
+      "destination": "./docs"
+    }
+  }
+  

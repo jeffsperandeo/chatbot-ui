@@ -1,0 +1,304 @@
+#!/bin/bash
+
+# Variables
+jobId="$1"
+partId="$2"
+quantity="$3"
+accessToken="1c39b602-682c-4100-a7eb-029863bdd191"
+
+# API Endpoint
+url="https://sandbox.tekmetric.com/api/v1/jobs/${jobId}/parts"
+
+# Payload
+payload=$(cat <<EOF
+{
+  "partId": ${partId},
+  "quantity": ${quantity}
+}
+EOF
+)
+
+# Make the API request
+response=$(curl -s -X POST "$url" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $accessToken" \
+  -d "$payload")
+
+# Check for success
+if echo "$response" | grep -q '"type":"SUCCESS"'; then
+  echo "Part added to job successfully:"
+  echo "$response"
+else
+  echo "Failed to add part to job:"
+  echo "$response"
+fi
+#!/bin/bash
+
+# Variables
+customerId="$1"
+status="$2"
+note="$3"
+accessToken="1c39b602-682c-4100-a7eb-029863bdd191"
+
+# Fetch repair orders for the customer
+response=$(curl -s --location "https://sandbox.tekmetric.com/api/v1/repair-orders?customer=${customerId}" \
+  --header "Authorization: Bearer $accessToken")
+
+# Extract the latest job ID (assuming we want to update the latest job)
+jobId=$(echo "$response" | jq -r '.content[0].jobs[0].id')
+
+# API Endpoint for updating job status
+url="https://sandbox.tekmetric.com/api/v1/jobs/${jobId}"
+
+# Payload
+payload=$(cat <<EOF
+{
+  "completed": ${status},
+  "note": "${note}"
+}
+EOF
+)
+
+# Make the API request
+update_response=$(curl -s -X PATCH "$url" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $accessToken" \
+  -d "$payload")
+
+# Check for success
+if echo "$update_response" | grep -q '"type":"SUCCESS"'; then
+  echo "Job status updated successfully:"
+  echo "$update_response"
+else
+  echo "Failed to update job status:"
+  echo "$update_response"
+fi
+#!/bin/bash
+
+# Variables
+vehicleId="$1"
+accessToken="1c39b602-682c-4100-a7eb-029863bdd191"
+
+# API Endpoint
+url="https://sandbox.tekmetric.com/api/v1/vehicles/${vehicleId}"
+
+# Make the API request
+response=$(curl -s -X GET "$url" \
+  -H "Authorization: Bearer $accessToken")
+
+# Check for success
+if echo "$response" | grep -q '"id"'; then
+  echo "Vehicle details fetched successfully:"
+  echo "$response" | jq
+else
+  echo "Failed to fetch vehicle details:"
+  echo "$response"
+fi
+#!/bin/bash
+
+shopId=238
+accessToken="1c39b602-682c-4100-a7eb-029863bdd191"
+page=0
+pageSize=100
+
+response=$(curl -s --location "https://sandbox.tekmetric.com/api/v1/customers?shop=$shopId&search=Jeff&page=$page&size=$pageSize" \
+--header "Authorization: Bearer $accessToken")
+
+customer=$(echo "$response" | jq '.content[] | select(.lastName == "Sperandeo" and .firstName == "Jeff")')
+
+if [ -n "$customer" ]; then
+    echo "Customer found:"
+    echo "$customer"
+else
+    echo "Customer not found"
+fi
+#!/bin/bash
+
+shopId=238
+accessToken="1c39b602-682c-4100-a7eb-029863bdd191"
+
+response=$(curl -s --location "https://sandbox.tekmetric.com/api/v1/appointments?shop=$shopId&page=0&size=100" \
+--header "Authorization: Bearer $accessToken")
+
+appointments=$(echo "$response" | jq '.content[]')
+
+if [ -n "$appointments" ]; then
+    echo "Appointments found:"
+    echo "$appointments"
+else
+    echo "No appointments found"
+fi
+#!/bin/bash
+
+shopId=238
+accessToken="1c39b602-682c-4100-a7eb-029863bdd191"
+repairOrderId="$1"
+
+response=$(curl -s --location "https://sandbox.tekmetric.com/api/v1/repair-orders/$repairOrderId" \
+--header "Authorization: Bearer $accessToken")
+
+jobs=$(echo "$response" | jq '.jobs[]')
+
+if [ -n "$jobs" ]; then
+    echo "Jobs found:"
+    echo "$jobs"
+else
+    echo "No jobs found"
+fi
+#!/bin/bash
+
+shopId=238
+accessToken="1c39b602-682c-4100-a7eb-029863bdd191"
+customerId="$1"
+
+response=$(curl -s --location "https://sandbox.tekmetric.com/api/v1/repair-orders?shop=$shopId&customer=$customerId&page=0&size=100" \
+--header "Authorization: Bearer $accessToken")
+
+repairOrders=$(echo "$response" | jq '.content[]')
+
+if [ -n "$repairOrders" ]; then
+    echo "Repair orders found:"
+    echo "$repairOrders"
+else
+    echo "No repair orders found"
+fi
+#!/bin/bash
+
+shopId=238
+accessToken="1c39b602-682c-4100-a7eb-029863bdd191"
+vin="$1"
+
+response=$(curl -s --location "https://sandbox.tekmetric.com/api/v1/vehicles?shop=$shopId&search=$vin&page=0&size=100" \
+--header "Authorization: Bearer $accessToken")
+
+vehicle=$(echo "$response" | jq '.content[] | select(.vin == "'$vin'")')
+
+if [ -n "$vehicle" ]; then
+    echo "Vehicle found:"
+    echo "$vehicle"
+else
+    echo "Vehicle not found"
+fi
+#!/bin/bash
+
+shopId=238
+accessToken="1c39b602-682c-4100-a7eb-029863bdd191"
+
+response=$(curl -s --location "https://sandbox.tekmetric.com/api/v1/jobs?shop=$shopId&page=0&size=100" \
+--header "Authorization: Bearer $accessToken")
+
+jobs=$(echo "$response" | jq '.content[]')
+
+if [ -n "$jobs" ]; then
+    echo "Jobs found:"
+    echo "$jobs"
+else
+    echo "No jobs found"
+fi
+#!/bin/bash
+
+# Variables
+customerId="$1"
+accessToken="1c39b602-682c-4100-a7eb-029863bdd191"
+
+# API Endpoint
+url="https://sandbox.tekmetric.com/api/v1/repair-orders?customer=${customerId}"
+
+# Make the API request
+response=$(curl -s --location "$url" \
+  --header "Authorization: Bearer $accessToken")
+
+echo "Repair orders found:"
+echo "$response" | jq '.content'
+import requests
+
+def query_assistant(user_id, message):
+    url = 'http://localhost:3001/assistants/assistant-query'
+    headers = {
+        'Content-Type': 'application/json'
+    }
+    data = {
+        'userId': user_id,
+        'message': message
+    }
+
+    response = requests.post(url, json=data)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return {'error': response.text}
+
+# Example usage
+user_id = 'user123'
+message = 'Get vehicle details for VIN 1HGBH41JXMN109186'
+
+response = query_assistant(user_id, message)
+print(response)
+#!/bin/bash
+
+# Variables
+jobId="$1"
+status="$2"
+note="$3"
+accessToken="1c39b602-682c-4100-a7eb-029863bdd191"
+
+# API Endpoint
+url="https://sandbox.tekmetric.com/api/v1/jobs/${jobId}"
+
+# Payload
+payload=$(cat <<EOF
+{
+  "completed": ${status},
+  "note": "${note}"
+}
+EOF
+)
+
+# Make the API request
+response=$(curl -s -X PATCH "$url" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $accessToken" \
+  -d "$payload")
+
+# Check for success
+if echo "$response" | grep -q '"type":"SUCCESS"'; then
+  echo "Job status updated successfully:"
+  echo "$response"
+else
+  echo "Failed to update job status:"
+  echo "$response"
+fi
+#!/bin/bash
+
+# Variables
+jobId="$1"
+status="$2"
+note="$3"
+accessToken="1c39b602-682c-4100-a7eb-029863bdd191"
+
+# API Endpoint
+url="https://sandbox.tekmetric.com/api/v1/jobs/${jobId}"
+
+# Payload
+payload=$(cat <<EOF
+{
+  "completed": ${status},
+  "note": "${note}"
+}
+EOF
+)
+
+# Make the API request
+response=$(curl -s -X PATCH "$url" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $accessToken" \
+  -d "$payload")
+
+# Check for success
+if echo "$response" | grep -q '"type":"SUCCESS"'; then
+  echo "Job status updated successfully:"
+  echo "$response"
+else
+  echo "Failed to update job status:"
+  echo "$response"
+fi

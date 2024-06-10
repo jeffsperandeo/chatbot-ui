@@ -1,0 +1,66 @@
+{
+    "sourceFile": "backend/routes/authRoutes.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 12,
+            "patches": [
+                {
+                    "date": 1717796619651,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1717812807011,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,4 @@\n-// backend/routes/authRoutes.js\n const express = require('express');\n const axios = require('axios');\n \n const router = express.Router();\n@@ -16,12 +15,13 @@\n                     'Authorization': 'Basic UlQ4WUpta1FCcXFRLVJuWDpzaGQ1U2xmcjFkdWNFbkJFcW1oUk5tYlo='\n                 }\n             }\n         );\n-        res.json(response.data);\n+        const token = response.data.access_token;\n+        res.json({ token });\n     } catch (error) {\n-        console.error('Error fetching OAuth token:', error.response? error.response.data : error.message);\n-        res.status(error.response? error.response.status : 500).send(error.response? error.response.data : 'Error fetching OAuth token');\n+        console.error('Error fetching OAuth token:', error.response ? error.response.data : error.message);\n+        res.status(error.response ? error.response.status : 500).send(error.response ? error.response.data : 'Error fetching OAuth token');\n\\ No newline at end of file\n     }\n });\n \n-module.exports = router;\n+module.exports = router;\n"
+                },
+                {
+                    "date": 1717813120167,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,5 +23,5 @@\n         res.status(error.response ? error.response.status : 500).send(error.response ? error.response.data : 'Error fetching OAuth token');\n     }\n });\n \n-module.exports = router;\n\\ No newline at end of file\n+module.exports = router;\n"
+                },
+                {
+                    "date": 1717875496586,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,8 +16,9 @@\n                 }\n             }\n         );\n         const token = response.data.access_token;\n+        console.log('Token retrieved from Tekmetric API:', token);\n         res.json({ token });\n     } catch (error) {\n         console.error('Error fetching OAuth token:', error.response ? error.response.data : error.message);\n         res.status(error.response ? error.response.status : 500).send(error.response ? error.response.data : 'Error fetching OAuth token');\n"
+                },
+                {
+                    "date": 1717878792886,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,9 +11,9 @@\n             }),\n             {\n                 headers: {\n                     'Content-Type': 'application/x-www-form-urlencoded',\n-                    'Authorization': 'Basic UlQ4WUpta1FCcXFRLVJuWDpzaGQ1U2xmcjFkdWNFbkJFcW1oUk5tYlo='\n+                    'Authorization': 'Basic Y2xpZW50X2lkOmNsaWVudF9zZWNyZXQ=' // Replace with your base64 encoded client_id:client_secret\n                 }\n             }\n         );\n         const token = response.data.access_token;\n"
+                },
+                {
+                    "date": 1717879114202,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,19 +1,22 @@\n const express = require('express');\n const axios = require('axios');\n-\n const router = express.Router();\n \n-router.post('/oauth/token', async (req, res) => {\n+const client_id = 'your_client_id';\n+const client_secret = 'your_client_secret';\n+const encoded_credentials = Buffer.from(`${client_id}:${client_secret}`).toString('base64');\n+\n+router.post('/api/auth/token', async (req, res) => {\n     try {\n         const response = await axios.post('https://sandbox.tekmetric.com/api/v1/oauth/token',\n             new URLSearchParams({\n                 grant_type: 'client_credentials'\n             }),\n             {\n                 headers: {\n                     'Content-Type': 'application/x-www-form-urlencoded',\n-                    'Authorization': 'Basic Y2xpZW50X2lkOmNsaWVudF9zZWNyZXQ=' // Replace with your base64 encoded client_id:client_secret\n+                    'Authorization': `Basic ${encoded_credentials}`\n                 }\n             }\n         );\n         const token = response.data.access_token;\n"
+                },
+                {
+                    "date": 1717879405894,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,7 @@\n const express = require('express');\n const axios = require('axios');\n+const { storeContext } = require('../utils/redisClient'); // Import Redis client\n const router = express.Router();\n \n const client_id = 'your_client_id';\n const client_secret = 'your_client_secret';\n@@ -20,8 +21,12 @@\n             }\n         );\n         const token = response.data.access_token;\n         console.log('Token retrieved from Tekmetric API:', token);\n+\n+        // Store the token in Redis\n+        await storeContext('authToken', { token });\n+\n         res.json({ token });\n     } catch (error) {\n         console.error('Error fetching OAuth token:', error.response ? error.response.data : error.message);\n         res.status(error.response ? error.response.status : 500).send(error.response ? error.response.data : 'Error fetching OAuth token');\n"
+                },
+                {
+                    "date": 1717880646359,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,9 @@\n const client_id = 'your_client_id';\n const client_secret = 'your_client_secret';\n const encoded_credentials = Buffer.from(`${client_id}:${client_secret}`).toString('base64');\n \n-router.post('/api/auth/token', async (req, res) => {\n+router.post('/token', async (req, res) => { // Ensure the route is '/token'\n     try {\n         const response = await axios.post('https://sandbox.tekmetric.com/api/v1/oauth/token',\n             new URLSearchParams({\n                 grant_type: 'client_credentials'\n"
+                },
+                {
+                    "date": 1717886466288,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,5 @@\n+// backend/routes/authRoutes.js\n const express = require('express');\n const axios = require('axios');\n const { storeContext } = require('../utils/redisClient'); // Import Redis client\n const router = express.Router();\n"
+                },
+                {
+                    "date": 1717887534303,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,9 +7,9 @@\n const client_id = 'your_client_id';\n const client_secret = 'your_client_secret';\n const encoded_credentials = Buffer.from(`${client_id}:${client_secret}`).toString('base64');\n \n-router.post('/token', async (req, res) => { // Ensure the route is '/token'\n+router.post('/token', async (req, res) => {\n     try {\n         const response = await axios.post('https://sandbox.tekmetric.com/api/v1/oauth/token',\n             new URLSearchParams({\n                 grant_type: 'client_credentials'\n"
+                },
+                {
+                    "date": 1717887817220,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,9 +7,9 @@\n const client_id = 'your_client_id';\n const client_secret = 'your_client_secret';\n const encoded_credentials = Buffer.from(`${client_id}:${client_secret}`).toString('base64');\n \n-router.post('/token', async (req, res) => {\n+router.post('/token', async (req, res) => { // Ensure the route is '/token'\n     try {\n         const response = await axios.post('https://sandbox.tekmetric.com/api/v1/oauth/token',\n             new URLSearchParams({\n                 grant_type: 'client_credentials'\n"
+                },
+                {
+                    "date": 1717888245180,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,8 @@\n-// backend/routes/authRoutes.js\n const express = require('express');\n const axios = require('axios');\n const { storeContext } = require('../utils/redisClient'); // Import Redis client\n+\n const router = express.Router();\n \n const client_id = 'your_client_id';\n const client_secret = 'your_client_secret';\n@@ -22,12 +22,10 @@\n             }\n         );\n         const token = response.data.access_token;\n         console.log('Token retrieved from Tekmetric API:', token);\n-\n         // Store the token in Redis\n         await storeContext('authToken', { token });\n-\n         res.json({ token });\n     } catch (error) {\n         console.error('Error fetching OAuth token:', error.response ? error.response.data : error.message);\n         res.status(error.response ? error.response.status : 500).send(error.response ? error.response.data : 'Error fetching OAuth token');\n"
+                },
+                {
+                    "date": 1717894740037,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,12 +1,13 @@\n+// backend/routes/authRoutes.js\n const express = require('express');\n const axios = require('axios');\n const { storeContext } = require('../utils/redisClient'); // Import Redis client\n \n const router = express.Router();\n \n-const client_id = 'your_client_id';\n-const client_secret = 'your_client_secret';\n+const client_id = process.env.TEKMETRICS_CLIENT_ID;\n+const client_secret = process.env.TEKMETRICS_CLIENT_SECRET;\n const encoded_credentials = Buffer.from(`${client_id}:${client_secret}`).toString('base64');\n \n router.post('/token', async (req, res) => { // Ensure the route is '/token'\n     try {\n@@ -23,9 +24,9 @@\n         );\n         const token = response.data.access_token;\n         console.log('Token retrieved from Tekmetric API:', token);\n         // Store the token in Redis\n-        await storeContext('authToken', { token });\n+        await storeContext('authToken', token);\n         res.json({ token });\n     } catch (error) {\n         console.error('Error fetching OAuth token:', error.response ? error.response.data : error.message);\n         res.status(error.response ? error.response.status : 500).send(error.response ? error.response.data : 'Error fetching OAuth token');\n"
+                }
+            ],
+            "date": 1717796619651,
+            "name": "Commit-0",
+            "content": "// backend/routes/authRoutes.js\nconst express = require('express');\nconst axios = require('axios');\n\nconst router = express.Router();\n\nrouter.post('/oauth/token', async (req, res) => {\n    try {\n        const response = await axios.post('https://sandbox.tekmetric.com/api/v1/oauth/token',\n            new URLSearchParams({\n                grant_type: 'client_credentials'\n            }),\n            {\n                headers: {\n                    'Content-Type': 'application/x-www-form-urlencoded',\n                    'Authorization': 'Basic UlQ4WUpta1FCcXFRLVJuWDpzaGQ1U2xmcjFkdWNFbkJFcW1oUk5tYlo='\n                }\n            }\n        );\n        res.json(response.data);\n    } catch (error) {\n        console.error('Error fetching OAuth token:', error.response? error.response.data : error.message);\n        res.status(error.response? error.response.status : 500).send(error.response? error.response.data : 'Error fetching OAuth token');\n    }\n});\n\nmodule.exports = router;"
+        }
+    ]
+}

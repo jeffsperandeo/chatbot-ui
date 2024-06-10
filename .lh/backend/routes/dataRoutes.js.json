@@ -1,0 +1,26 @@
+{
+    "sourceFile": "backend/routes/dataRoutes.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1717888261324,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1717898004140,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,12 @@\n+// backend/routes/dataRoutes.js\n+const express = require('express');\n+const { getCustomer, createNewVehicle, getVehicleDetails, listAppointments } = require('../controllers/dataController');\n+\n+const router = express.Router();\n+\n+router.get('/customer-details', getCustomer);\n+router.post('/vehicles', createNewVehicle);\n+router.get('/vehicle-details', getVehicleDetails);\n+router.get('/appointments', listAppointments); // Ensure this line exists\n+\n+module.exports = router;\n"
+                },
+                {
+                    "date": 1717898292320,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,24 +1,18 @@\n-// backend/routes/dataRoutes.js\n const express = require('express');\n const { getCustomer, createNewVehicle, getVehicleDetails, listAppointments } = require('../controllers/dataController');\n \n const router = express.Router();\n \n router.get('/customer-details', getCustomer);\n router.post('/vehicles', createNewVehicle);\n router.get('/vehicle-details', getVehicleDetails);\n-router.get('/appointments', listAppointments); // Ensure this line exists\n+router.get('/appointments', async (req, res) => {\n+    try {\n+        await listAppointments(req, res);\n+    } catch (error) {\n+        console.error('Error fetching appointments:', error.message);\n+        res.status(500).json({ error: error.message });\n+    }\n+}); // Ensure this line exists\n \n module.exports = router;\n-// backend/routes/dataRoutes.js\n-const express = require('express');\n-const { getCustomer, createNewVehicle, getVehicleDetails, listAppointments } = require('../controllers/dataController');\n-\n-const router = express.Router();\n-\n-router.get('/customer-details', getCustomer);\n-router.post('/vehicles', createNewVehicle);\n-router.get('/vehicle-details', getVehicleDetails);\n-router.get('/appointments', listAppointments); // Ensure this line exists\n-\n-module.exports = router;\n"
+                }
+            ],
+            "date": 1717888261324,
+            "name": "Commit-0",
+            "content": "// backend/routes/dataRoutes.js\nconst express = require('express');\nconst { getCustomer, createNewVehicle, getVehicleDetails, listAppointments } = require('../controllers/dataController');\n\nconst router = express.Router();\n\nrouter.get('/customer-details', getCustomer);\nrouter.post('/vehicles', createNewVehicle);\nrouter.get('/vehicle-details', getVehicleDetails);\nrouter.get('/appointments', listAppointments); // Ensure this line exists\n\nmodule.exports = router;\n"
+        }
+    ]
+}

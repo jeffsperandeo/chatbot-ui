@@ -1,0 +1,26 @@
+{
+    "sourceFile": "backend/routes/chatRoutes.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1717807059964,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1717892571718,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,4 @@\n-// backend/routes/chatRoutes.js\n const express = require('express');\n const { handleUserInput } = require('../utils/chatHandler');\n const router = express.Router();\n \n"
+                },
+                {
+                    "date": 1717894751688,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,12 +1,18 @@\n+// backend/routes/chatRoutes.js\n const express = require('express');\n const { handleUserInput } = require('../utils/chatHandler');\n+const { getContext } = require('../utils/redisClient'); // Import Redis client\n const router = express.Router();\n \n router.post('/message', async (req, res) => {\n     try {\n-        const { message, userId, authToken } = req.body; // Ensure authToken is included in the request body\n-        const response = await handleUserInput(message, userId, authToken); // Pass authToken to handleUserInput\n+        const { message, userId } = req.body; // Ensure authToken is included in the request body\n+        const token = await getContext('authToken'); // Retrieve token from Redis\n+        if (!token) {\n+            throw new Error('No authentication token found.');\n+        }\n+        const response = await handleUserInput(message, userId, token); // Pass authToken to handleUserInput\n         res.status(200).json(response);\n     } catch (error) {\n         console.error('Error handling chat message:', error.message);\n         res.status(500).json({ error: error.message });\n"
+                }
+            ],
+            "date": 1717807059964,
+            "name": "Commit-0",
+            "content": "// backend/routes/chatRoutes.js\nconst express = require('express');\nconst { handleUserInput } = require('../utils/chatHandler');\nconst router = express.Router();\n\nrouter.post('/message', async (req, res) => {\n    try {\n        const { message, userId, authToken } = req.body; // Ensure authToken is included in the request body\n        const response = await handleUserInput(message, userId, authToken); // Pass authToken to handleUserInput\n        res.status(200).json(response);\n    } catch (error) {\n        console.error('Error handling chat message:', error.message);\n        res.status(500).json({ error: error.message });\n    }\n});\n\nmodule.exports = router;\n"
+        }
+    ]
+}

@@ -21,6 +21,8 @@ import {
   processResponse,
   validateChatSettings
 } from "../chat-helpers"
+// If `ChatGPTAssistant` needs to be imported
+// import { ChatGPTAssistant } from "@/components/chat-gpt-assistant"
 
 export const useChatHandler = () => {
   const router = useRouter()

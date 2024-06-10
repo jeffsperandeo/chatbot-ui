@@ -3,7 +3,7 @@ import { ChatSettings } from "@/types"
 import { OpenAIStream, StreamingTextResponse } from "ai"
 import { ServerRuntime } from "next"
 import OpenAI from "openai"
-import { ChatCompletionCreateParamsBase } from "openai/resources/chat/completions.mjs"
+import { ChatCompletionCreateParamsBase } from "openai"
 
 export const runtime: ServerRuntime = "edge"
 

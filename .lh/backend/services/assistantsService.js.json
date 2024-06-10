@@ -1,0 +1,22 @@
+{
+    "sourceFile": "backend/services/assistantsService.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1717810702007,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1717875525098,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,8 +9,9 @@\n                 page: 0,\n                 size: 100\n             }\n         });\n+        console.log('Response from /customers endpoint:', response.data);\n         const customers = response.data.content;\n         const customer = customers.find(c => c.firstName === 'Jeff' && c.lastName === 'Sperandeo');\n         return customer;\n     } catch (error) {\n"
+                }
+            ],
+            "date": 1717810702007,
+            "name": "Commit-0",
+            "content": "const axios = require('../utils/axiosConfig'); // Ensure this path is correct\n\nasync function getCustomerDetails(customerName) {\n    try {\n        const response = await axios.get('/customers', {\n            params: {\n                shop: 238,\n                search: customerName,\n                page: 0,\n                size: 100\n            }\n        });\n        const customers = response.data.content;\n        const customer = customers.find(c => c.firstName === 'Jeff' && c.lastName === 'Sperandeo');\n        return customer;\n    } catch (error) {\n        console.error('Error fetching customer details:', error.message);\n        throw error;\n    }\n}\n\nmodule.exports = { getCustomerDetails };\n"
+        }
+    ]
+}

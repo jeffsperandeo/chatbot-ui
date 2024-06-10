@@ -1,0 +1,18 @@
+{
+    "sourceFile": "app/[locale]/[workspaceid]/chat/chat-gpt-assistant.tsx",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1717812658438,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1717812658438,
+            "name": "Commit-0",
+            "content": "import React, { useState } from 'react';\nimport axios from 'axios';\n\nconst ChatGPTAssistant: React.FC = () => {\n    const [input, setInput] = useState('');\n    const [output, setOutput] = useState('');\n\n    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {\n        setInput(e.target.value);\n    };\n\n    const handleSubmit = async () => {\n        try {\n            const token = localStorage.getItem('authToken'); // Retrieve token from local storage\n            const response = await axios.post('/command', { command: input }, {\n                headers: {\n                    'Authorization': `Bearer ${token}`\n                }\n            });\n            setOutput(JSON.stringify(response.data, null, 2));\n        } catch (error) {\n            console.error('Error handling command:', error);\n            setOutput('Error processing your request.');\n        }\n    };\n\n    return (\n        <div className=\"chat-gpt-assistant\">\n            <p>ChatGPT Assistant</p>\n            <input type=\"text\" value={input} onChange={handleInputChange} placeholder=\"Enter your command\" />\n            <button onClick={handleSubmit}>Submit</button>\n            {output && <pre>{output}</pre>}\n        </div>\n    );\n};\n\nexport default ChatGPTAssistant;\n"
+        }
+    ]
+}

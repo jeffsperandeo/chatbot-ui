@@ -1,0 +1,38 @@
+{
+    "sourceFile": "backend/utils/redisClient.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 5,
+            "patches": [
+                {
+                    "date": 1717879384309,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1717880374068,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,21 +15,21 @@\n \n async function storeContext(userId, context) {\n     try {\n         await client.hSet(`user:${userId}:context`, context);\n-        console.log('Context stored successfully');\n+        console.log('Context stored successfully for user:', userId);\n     } catch (err) {\n-        console.error('Error storing context:', err);\n+        console.error('Error storing context for user:', userId, err);\n     }\n }\n \n async function getContext(userId) {\n     try {\n         const context = await client.hGetAll(`user:${userId}:context`);\n-        console.log('Context retrieved successfully:', context);\n+        console.log('Context retrieved successfully for user:', userId, context);\n         return context;\n     } catch (err) {\n-        console.error('Error retrieving context:', err);\n+        console.error('Error retrieving context for user:', userId, err);\n     }\n }\n \n module.exports = { storeContext, getContext };\n"
+                },
+                {
+                    "date": 1717886514189,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,5 @@\n+// backend/utils/redisClient.js\n const redis = require('redis');\n require('dotenv').config();\n \n const client = redis.createClient({\n"
+                },
+                {
+                    "date": 1717887513114,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,24 +13,24 @@\n }).catch(err => {\n     console.error('Error connecting to Redis', err);\n });\n \n-async function storeContext(userId, context) {\n+async function storeContext(key, context) {\n     try {\n-        await client.hSet(`user:${userId}:context`, context);\n-        console.log('Context stored successfully for user:', userId);\n+        await client.set(key, JSON.stringify(context));\n+        console.log('Context stored successfully for key:', key);\n     } catch (err) {\n-        console.error('Error storing context for user:', userId, err);\n+        console.error('Error storing context for key:', key, err);\n     }\n }\n \n-async function getContext(userId) {\n+async function getContext(key) {\n     try {\n-        const context = await client.hGetAll(`user:${userId}:context`);\n-        console.log('Context retrieved successfully for user:', userId, context);\n-        return context;\n+        const context = await client.get(key);\n+        console.log('Context retrieved successfully for key:', key, context);\n+        return JSON.parse(context);\n     } catch (err) {\n-        console.error('Error retrieving context for user:', userId, err);\n+        console.error('Error retrieving context for key:', key, err);\n     }\n }\n \n module.exports = { storeContext, getContext };\n"
+                },
+                {
+                    "date": 1717887798640,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,24 +13,24 @@\n }).catch(err => {\n     console.error('Error connecting to Redis', err);\n });\n \n-async function storeContext(key, context) {\n+async function storeContext(userId, context) {\n     try {\n-        await client.set(key, JSON.stringify(context));\n-        console.log('Context stored successfully for key:', key);\n+        await client.hSet(`user:${userId}:context`, context);\n+        console.log('Context stored successfully for user:', userId);\n     } catch (err) {\n-        console.error('Error storing context for key:', key, err);\n+        console.error('Error storing context for user:', userId, err);\n     }\n }\n \n-async function getContext(key) {\n+async function getContext(userId) {\n     try {\n-        const context = await client.get(key);\n-        console.log('Context retrieved successfully for key:', key, context);\n-        return JSON.parse(context);\n+        const context = await client.hGetAll(`user:${userId}:context`);\n+        console.log('Context retrieved successfully for user:', userId, context);\n+        return context;\n     } catch (err) {\n-        console.error('Error retrieving context for key:', key, err);\n+        console.error('Error retrieving context for user:', userId, err);\n     }\n }\n \n module.exports = { storeContext, getContext };\n"
+                },
+                {
+                    "date": 1717899732887,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n });\n \n async function storeContext(userId, context) {\n     try {\n-        await client.hSet(`user:${userId}:context`, context);\n+        await client.hSet(`user:${userId}:context`, JSON.stringify(context)); // Convert context to a string\n         console.log('Context stored successfully for user:', userId);\n     } catch (err) {\n         console.error('Error storing context for user:', userId, err);\n     }\n"
+                }
+            ],
+            "date": 1717879384309,
+            "name": "Commit-0",
+            "content": "const redis = require('redis');\nrequire('dotenv').config();\n\nconst client = redis.createClient({\n    url: process.env.REDIS_URL\n});\n\nclient.on('error', (err) => console.log('Redis Client Error', err));\n\nclient.connect().then(() => {\n    console.log('Connected to Redis');\n}).catch(err => {\n    console.error('Error connecting to Redis', err);\n});\n\nasync function storeContext(userId, context) {\n    try {\n        await client.hSet(`user:${userId}:context`, context);\n        console.log('Context stored successfully');\n    } catch (err) {\n        console.error('Error storing context:', err);\n    }\n}\n\nasync function getContext(userId) {\n    try {\n        const context = await client.hGetAll(`user:${userId}:context`);\n        console.log('Context retrieved successfully:', context);\n        return context;\n    } catch (err) {\n        console.error('Error retrieving context:', err);\n    }\n}\n\nmodule.exports = { storeContext, getContext };\n"
+        }
+    ]
+}

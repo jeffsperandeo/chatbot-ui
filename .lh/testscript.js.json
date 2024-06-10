@@ -1,0 +1,18 @@
+{
+    "sourceFile": "testscript.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1717889956081,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1717889956081,
+            "name": "Commit-0",
+            "content": "const axios = require('axios');\n\nasync function testGetVehicleDetails() {\n    const url = 'http://localhost:3002/chat/message';\n    const message = 'Get vehicle details for VIN 3KPF24AD2ME331480';\n    const userId = 'your_user_id'; // Replace with your actual user ID\n    const authToken = 'your_auth_token'; // Replace with your actual auth token\n\n    try {\n        const response = await axios.post(url, {\n            message,\n            userId,\n            authToken\n        });\n        console.log('Response:', response.data);\n    } catch (error) {\n        console.error('Error:', error.message);\n    }\n}\n\ntestGetVehicleDetails();\n"
+        }
+    ]
+}

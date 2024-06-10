@@ -1,0 +1,26 @@
+{
+    "sourceFile": "app/api/assistants/openai/commandservice.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1717812745973,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1717875385061,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,8 +2,12 @@\n \n export async function sendCommand(input: string) {\n     try {\n         const token = localStorage.getItem('authToken'); // Retrieve token from local storage\n+        console.log('Token retrieved from local storage:', token);\n+        if (!token) {\n+            throw new Error('No authentication token found.');\n+        }\n         const response = await axios.post('http://localhost:3002/commands/execute', { input }, {\n             headers: {\n                 'Authorization': `Bearer ${token}`\n             }\n"
+                },
+                {
+                    "date": 1717877231613,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,4 +17,5 @@\n         console.error('Error executing command:', error);\n         return { error: 'Failed to execute command' };\n     }\n }\n+tiuc\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1717812745973,
+            "name": "Commit-0",
+            "content": "import axios from 'axios';\n\nexport async function sendCommand(input: string) {\n    try {\n        const token = localStorage.getItem('authToken'); // Retrieve token from local storage\n        const response = await axios.post('http://localhost:3002/commands/execute', { input }, {\n            headers: {\n                'Authorization': `Bearer ${token}`\n            }\n        });\n        return response.data;\n    } catch (error) {\n        console.error('Error executing command:', error);\n        return { error: 'Failed to execute command' };\n    }\n}\n"
+        }
+    ]
+}

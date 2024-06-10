@@ -1,0 +1,18 @@
+{
+    "sourceFile": "testcommandparser.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1717786157700,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1717786157700,
+            "name": "Commit-0",
+            "content": "// testCommandParser.js\nconst { parseCommand } = require('./backend/utils/commandParser');\n\nconst testInputs = [\n    \"Get vehicle details for VIN WBA5R1C53KAK07369\",\n    \"Add a new vehicle with details {\\\"make\\\":\\\"Toyota\\\",\\\"model\\\":\\\"Camry\\\"}\",\n    \"Update vehicle with ID 12345\",\n    \"List all jobs in the shop\",\n    \"Change status of job ID 67890 to completed\",\n    \"Get customer details for Jeff Sperandeo\",\n    \"What are my appointments today?\"\n];\n\ntestInputs.forEach(input => {\n    const parsed = parseCommand(input);\n    console.log(`Input: \"${input}\"`);\n    console.log(\"Parsed:\", parsed);\n});\n"
+        }
+    ]
+}
