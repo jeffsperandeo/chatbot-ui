@@ -1,3 +1,4 @@
+// backend/routes/dataRoutes.js
 const express = require('express');
 const { getCustomer, createNewVehicle, getVehicleDetails, listAppointments } = require('../controllers/dataController');
 
@@ -13,6 +14,6 @@ router.get('/appointments', async (req, res) => {
         console.error('Error fetching appointments:', error.message);
         res.status(500).json({ error: error.message });
     }
-}); // Ensure this line exists
+});
 
 module.exports = router;

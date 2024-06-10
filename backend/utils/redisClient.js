@@ -14,22 +14,22 @@ client.connect().then(() => {
     console.error('Error connecting to Redis', err);
 });
 
-async function storeContext(userId, context) {
+async function storeContext(key, value) {
     try {
-        await client.hSet(`user:${userId}:context`, JSON.stringify(context)); // Convert context to a string
-        console.log('Context stored successfully for user:', userId);
+        await client.set(key, value);
+        console.log('Context stored successfully:', key, value);
     } catch (err) {
-        console.error('Error storing context for user:', userId, err);
+        console.error('Error storing context:', key, err);
     }
 }
 
-async function getContext(userId) {
+async function getContext(key) {
     try {
-        const context = await client.hGetAll(`user:${userId}:context`);
-        console.log('Context retrieved successfully for user:', userId, context);
-        return context;
+        const value = await client.get(key);
+        console.log('Context retrieved successfully:', key, value);
+        return value;
     } catch (err) {
-        console.error('Error retrieving context for user:', userId, err);
+        console.error('Error retrieving context:', key, err);
     }
 }
 

@@ -2,7 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { createProxyMiddleware } = require('http-proxy-middleware');
-const authRoutes = require('./routes/authRoutes'); // Ensure this path is correct
+const authRoutes = require('./routes/authRoutes');
 const dataRoutes = require('./routes/dataRoutes');
 const assistantsRoutes = require('./routes/assistantsRoutes');
 const chatRoutes = require('./routes/chatRoutes');
@@ -14,8 +14,8 @@ const app = express();
 const PORT = process.env.PORT || 3002;
 
 app.use(bodyParser.json());
-app.use('/api/auth', authRoutes); // Ensure this line exists and points to authRoutes
-app.use('/api', dataRoutes); // Ensure this line exists and points to dataRoutes
+app.use('/api/auth', authRoutes);
+app.use('/api', dataRoutes);
 app.use('/assistants', assistantsRoutes);
 app.use('/chat', chatRoutes);
 app.use('/command', commandRoutes);

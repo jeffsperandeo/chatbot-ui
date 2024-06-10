@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 4,
+            "activePatchIndex": 15,
             "patches": [
                 {
                     "date": 1717877260189,
@@ -24,6 +24,50 @@
                 {
                     "date": 1717898136228,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n \n # Configuration\n BASE_URL = 'http://localhost:3002'\n AUTH_URL = f'{BASE_URL}/api/auth/token'\n-APPOINTMENTS_URL = f'{BASE_URL}/appointments'\n+APPOINTMENTS_URL = f'{BASE_URL}/api/appointments'\n AUTH_HEADER = 'Authorization'\n TOKEN_STORAGE_FILE = 'auth_token.json'\n \n # Function to authenticate and store the token\n"
+                },
+                {
+                    "date": 1718020495387,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,11 +1,11 @@\n import requests\n import json\n \n # Configuration\n-BASE_URL = 'http://localhost:3002'\n+BASE_URL = 'http://localhost:3000'\n AUTH_URL = f'{BASE_URL}/api/auth/token'\n-APPOINTMENTS_URL = f'{BASE_URL}/api/appointments'\n+APPOINTMENTS_URL = f'{BASE_URL}/appointments'\n AUTH_HEADER = 'Authorization'\n TOKEN_STORAGE_FILE = 'auth_token.json'\n \n # Function to authenticate and store the token\n"
+                },
+                {
+                    "date": 1718020762738,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,9 @@\n import json\n \n # Configuration\n BASE_URL = 'http://localhost:3000'\n-AUTH_URL = f'{BASE_URL}/api/auth/token'\n+AUTH_URL = f'{BASE_URL}/token'  # Update this to match the correct endpoint\n APPOINTMENTS_URL = f'{BASE_URL}/appointments'\n AUTH_HEADER = 'Authorization'\n TOKEN_STORAGE_FILE = 'auth_token.json'\n \n"
+                },
+                {
+                    "date": 1718020955021,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,9 @@\n import json\n \n # Configuration\n BASE_URL = 'http://localhost:3000'\n-AUTH_URL = f'{BASE_URL}/token'  # Update this to match the correct endpoint\n+AUTH_URL = f'{BASE_URL}/auth/token'  # Update this to match the correct endpoint\n APPOINTMENTS_URL = f'{BASE_URL}/appointments'\n AUTH_HEADER = 'Authorization'\n TOKEN_STORAGE_FILE = 'auth_token.json'\n \n"
+                },
+                {
+                    "date": 1718022074438,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,8 +17,9 @@\n             'Content-Type': 'application/x-www-form-urlencoded',\n             'Authorization': 'Basic UlQ4WUpta1FCcXFRLVJuWDpzaGQ1U2xmcjFkdWNFbkJFcW1oUk5tYlo='\n         })\n         response.raise_for_status()\n+        print(f'Response content: {response.content}')  # Add this line to debug the response content\n         token = response.json().get('token')\n         print(f'Token retrieved from authentication: {token}')\n         store_token(token)\n         return token\n@@ -47,9 +48,9 @@\n # Function to make a request with the token\n def fetch_appointments(token):\n     try:\n         response = requests.get(APPOINTMENTS_URL, headers={\n-            AUTH_HEADER: f'Bearer {token}'\n+            AUTH_HEADER: `Bearer ${token}`\n         })\n         response.raise_for_status()\n         print(f'Appointments: {response.json()}')\n     except requests.RequestException as e:\n"
+                },
+                {
+                    "date": 1718022992220,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,9 +14,9 @@\n         response = requests.post(AUTH_URL, data={\n             'grant_type': 'client_credentials'\n         }, headers={\n             'Content-Type': 'application/x-www-form-urlencoded',\n-            'Authorization': 'Basic UlQ4WUpta1FCcXFRLVJuWDpzaGQ1U2xmcjFkdWNFbkJFcW1oUk5tYlo='\n+            'Authorization': 'Basic UlQ4WUpta1FCcXFRLVJuWDpzaGQ1U2xmcjFkdWNFbkJFcw1oUk5tYlo='\n         })\n         response.raise_for_status()\n         print(f'Response content: {response.content}')  # Add this line to debug the response content\n         token = response.json().get('token')\n@@ -48,9 +48,9 @@\n # Function to make a request with the token\n def fetch_appointments(token):\n     try:\n         response = requests.get(APPOINTMENTS_URL, headers={\n-            AUTH_HEADER: `Bearer ${token}`\n+            AUTH_HEADER: f'Bearer {token}'\n         })\n         response.raise_for_status()\n         print(f'Appointments: {response.json()}')\n     except requests.RequestException as e:\n"
+                },
+                {
+                    "date": 1718023145665,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,12 +18,17 @@\n             'Authorization': 'Basic UlQ4WUpta1FCcXFRLVJuWDpzaGQ1U2xmcjFkdWNFbkJFcw1oUk5tYlo='\n         })\n         response.raise_for_status()\n         print(f'Response content: {response.content}')  # Add this line to debug the response content\n-        token = response.json().get('token')\n-        print(f'Token retrieved from authentication: {token}')\n-        store_token(token)\n-        return token\n+        try:\n+            token = response.json().get('token')\n+            print(f'Token retrieved from authentication: {token}')\n+            store_token(token)\n+            return token\n+        except requests.exceptions.JSONDecodeError:\n+            print(\"Error: Response is not in JSON format\")\n+            print(response.text)  # Print the raw response text\n+            raise\n     except requests.RequestException as e:\n         print(f'Error during authentication: {e}')\n         raise\n \n"
+                },
+                {
+                    "date": 1718023479852,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,9 @@\n import json\n \n # Configuration\n BASE_URL = 'http://localhost:3000'\n-AUTH_URL = f'{BASE_URL}/auth/token'  # Update this to match the correct endpoint\n+AUTH_URL = f'{BASE_URL}/api/auth/token'  # Update this to match the correct endpoint\n APPOINTMENTS_URL = f'{BASE_URL}/appointments'\n AUTH_HEADER = 'Authorization'\n TOKEN_STORAGE_FILE = 'auth_token.json'\n \n"
+                },
+                {
+                    "date": 1718024618563,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n import requests\n import json\n \n # Configuration\n-BASE_URL = 'http://localhost:3000'\n+BASE_URL = 'http://localhost:3002'  # Update this to point to the backend server\n AUTH_URL = f'{BASE_URL}/api/auth/token'  # Update this to match the correct endpoint\n APPOINTMENTS_URL = f'{BASE_URL}/appointments'\n AUTH_HEADER = 'Authorization'\n TOKEN_STORAGE_FILE = 'auth_token.json'\n@@ -18,17 +18,12 @@\n             'Authorization': 'Basic UlQ4WUpta1FCcXFRLVJuWDpzaGQ1U2xmcjFkdWNFbkJFcw1oUk5tYlo='\n         })\n         response.raise_for_status()\n         print(f'Response content: {response.content}')  # Add this line to debug the response content\n-        try:\n-            token = response.json().get('token')\n-            print(f'Token retrieved from authentication: {token}')\n-            store_token(token)\n-            return token\n-        except requests.exceptions.JSONDecodeError:\n-            print(\"Error: Response is not in JSON format\")\n-            print(response.text)  # Print the raw response text\n-            raise\n+        token = response.json().get('token')\n+        print(f'Token retrieved from authentication: {token}')\n+        store_token(token)\n+        return token\n     except requests.RequestException as e:\n         print(f'Error during authentication: {e}')\n         raise\n \n"
+                },
+                {
+                    "date": 1718025242485,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n \n # Configuration\n BASE_URL = 'http://localhost:3002'  # Update this to point to the backend server\n AUTH_URL = f'{BASE_URL}/api/auth/token'  # Update this to match the correct endpoint\n-APPOINTMENTS_URL = f'{BASE_URL}/appointments'\n+APPOINTMENTS_URL = f'{BASE_URL}/api/appointments'  # Corrected endpoint\n AUTH_HEADER = 'Authorization'\n TOKEN_STORAGE_FILE = 'auth_token.json'\n \n # Function to authenticate and store the token\n"
+                },
+                {
+                    "date": 1718032697722,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,9 +14,9 @@\n         response = requests.post(AUTH_URL, data={\n             'grant_type': 'client_credentials'\n         }, headers={\n             'Content-Type': 'application/x-www-form-urlencoded',\n-            'Authorization': 'Basic UlQ4WUpta1FCcXFRLVJuWDpzaGQ1U2xmcjFkdWNFbkJFcw1oUk5tYlo='\n+            'Authorization': 'Basic UlQ4WUpta1FCcXFRLVJuWDpzaGQ1U2xmcjFkdWNFbkJFcW1oUk5tYlo='\n         })\n         response.raise_for_status()\n         print(f'Response content: {response.content}')  # Add this line to debug the response content\n         token = response.json().get('token')\n"
+                },
+                {
+                    "date": 1718037801385,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -49,8 +49,10 @@\n def fetch_appointments(token):\n     try:\n         response = requests.get(APPOINTMENTS_URL, headers={\n             AUTH_HEADER: f'Bearer {token}'\n+        }, params={\n+            'shop': 238\n         })\n         response.raise_for_status()\n         print(f'Appointments: {response.json()}')\n     except requests.RequestException as e:\n"
                 }
             ],
             "date": 1717877260189,

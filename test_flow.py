@@ -2,9 +2,9 @@ import requests
 import json
 
 # Configuration
-BASE_URL = 'http://localhost:3002'
-AUTH_URL = f'{BASE_URL}/api/auth/token'
-APPOINTMENTS_URL = f'{BASE_URL}/api/appointments'
+BASE_URL = 'http://localhost:3002'  # Update this to point to the backend server
+AUTH_URL = f'{BASE_URL}/api/auth/token'  # Update this to match the correct endpoint
+APPOINTMENTS_URL = f'{BASE_URL}/api/appointments'  # Corrected endpoint
 AUTH_HEADER = 'Authorization'
 TOKEN_STORAGE_FILE = 'auth_token.json'
 
@@ -18,6 +18,7 @@ def authenticate():
             'Authorization': 'Basic UlQ4WUpta1FCcXFRLVJuWDpzaGQ1U2xmcjFkdWNFbkJFcW1oUk5tYlo='
         })
         response.raise_for_status()
+        print(f'Response content: {response.content}')  # Add this line to debug the response content
         token = response.json().get('token')
         print(f'Token retrieved from authentication: {token}')
         store_token(token)
@@ -49,6 +50,8 @@ def fetch_appointments(token):
     try:
         response = requests.get(APPOINTMENTS_URL, headers={
             AUTH_HEADER: f'Bearer {token}'
+        }, params={
+            'shop': 238
         })
         response.raise_for_status()
         print(f'Appointments: {response.json()}')

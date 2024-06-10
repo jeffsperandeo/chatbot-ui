@@ -12,10 +12,12 @@ function parseCommand(input) {
 
     for (const [command, endpoint] of Object.entries(commandMappings)) {
         if (input.startsWith(command)) {
+            console.log(`Command recognized: ${command}`); // Add this line
             return { command, endpoint, details: input.replace(command, '').trim() };
         }
     }
 
+    console.log(`Command not recognized: ${input}`); // Add this line
     return null;
 }
 

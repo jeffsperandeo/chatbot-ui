@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 1,
+            "activePatchIndex": 8,
             "patches": [
                 {
                     "date": 1717813050341,
@@ -12,6 +12,34 @@
                 {
                     "date": 1717875432527,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,8 +12,9 @@\n   const [error, setError] = useState<string>('');\n   const [loading, setLoading] = useState<boolean>(true);\n \n   const token = localStorage.getItem('authToken'); // Retrieve token from local storage\n+  console.log('Token retrieved from local storage:', token);\n \n   useEffect(() => {\n     const getAppointments = async () => {\n       setLoading(true);\n"
+                },
+                {
+                    "date": 1718021181291,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,41 +1,33 @@\n-import React, { FC, useEffect, useState } from 'react';\n-import { fetchAppointments } from '../api/appointments';\n+import React, { useEffect, useState } from 'react';\n+import { fetchAppointments } from './appointments';\n \n interface Appointment {\n   id: string;\n   title: string;\n   startTime: string;\n }\n \n-const Appointments: FC = () => {\n+const Appointments: React.FC = () => {\n   const [appointments, setAppointments] = useState<Appointment[]>([]);\n-  const [error, setError] = useState<string>('');\n+  const [error, setError] = useState<string | null>(null);\n   const [loading, setLoading] = useState<boolean>(true);\n \n-  const token = localStorage.getItem('authToken'); // Retrieve token from local storage\n-  console.log('Token retrieved from local storage:', token);\n-\n   useEffect(() => {\n     const getAppointments = async () => {\n-      setLoading(true);\n       try {\n         const data = await fetchAppointments();\n         setAppointments(data);\n       } catch (err) {\n-        setError('Failed to fetch appointments.');\n+        setError('Error fetching appointments');\n+        console.error('Error fetching appointments:', err);\n       } finally {\n         setLoading(false);\n       }\n     };\n \n-    if (token) {\n-      getAppointments();\n-    } else {\n-      setError('No authentication token found.');\n-      setLoading(false);\n-    }\n-  }, [token]);\n+    getAppointments();\n+  }, []);\n \n   if (loading) {\n     return <div>Loading...</div>;\n   }\n@@ -47,9 +39,9 @@\n   return (\n     <div>\n       <h2>Appointments</h2>\n       <ul>\n-        {appointments.map((appointment) => (\n+        {appointments.map(appointment => (\n           <li key={appointment.id}>\n             {appointment.title} - {new Date(appointment.startTime).toLocaleString()}\n           </li>\n         ))}\n"
+                },
+                {
+                    "date": 1718021305914,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n import React, { useEffect, useState } from 'react';\n-import { fetchAppointments } from './appointments';\n+import fetchAppointments from './appointments';\n \n interface Appointment {\n   id: string;\n   title: string;\n"
+                },
+                {
+                    "date": 1718021311388,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n import React, { useEffect, useState } from 'react';\n-import fetchAppointments from './appointments';\n+import { fetchAppointments } from './appointments';\n \n interface Appointment {\n   id: string;\n   title: string;\n"
+                },
+                {
+                    "date": 1718021410733,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n import React, { useEffect, useState } from 'react';\n-import { fetchAppointments } from './appointments';\n+import fetchAppointments from './appointments'; // Correct import statement\n \n interface Appointment {\n   id: string;\n   title: string;\n"
+                },
+                {
+                    "date": 1718021564157,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n   useEffect(() => {\n     const getAppointments = async () => {\n       try {\n         const data = await fetchAppointments();\n-        setAppointments(data);\n+        setAppointments(data); // Ensure data is of type Appointment[]\n       } catch (err) {\n         setError('Error fetching appointments');\n         console.error('Error fetching appointments:', err);\n       } finally {\n"
+                },
+                {
+                    "date": 1718021685803,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,9 +14,9 @@\n \n   useEffect(() => {\n     const getAppointments = async () => {\n       try {\n-        const data = await fetchAppointments();\n+        const data: Appointment[] = await fetchAppointments();\n         setAppointments(data); // Ensure data is of type Appointment[]\n       } catch (err) {\n         setError('Error fetching appointments');\n         console.error('Error fetching appointments:', err);\n"
+                },
+                {
+                    "date": 1718028722438,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n   useEffect(() => {\n     const getAppointments = async () => {\n       try {\n         const data: Appointment[] = await fetchAppointments();\n-        setAppointments(data); // Ensure data is of type Appointment[]\n+        setAppointments(data);\n       } catch (err) {\n         setError('Error fetching appointments');\n         console.error('Error fetching appointments:', err);\n       } finally {\n"
                 }
             ],
             "date": 1717813050341,

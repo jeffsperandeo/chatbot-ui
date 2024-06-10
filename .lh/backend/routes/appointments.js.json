@@ -1,0 +1,18 @@
+{
+    "sourceFile": "backend/routes/appointments.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1718021204253,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1718021204253,
+            "name": "Commit-0",
+            "content": "import axios from 'axios';\n\nexport const fetchAppointments = async () => {\n    const token = localStorage.getItem('authToken'); // Retrieve token from local storage\n    console.log('Token retrieved from local storage:', token);\n    if (!token) {\n        throw new Error('No authentication token found.');\n    }\n    const response = await axios.get('/api/appointments', {\n        headers: {\n            'Authorization': `Bearer ${token}`,\n            'Accept': 'application/json'\n        }\n    });\n    return response.data;\n};\n"
+        }
+    ]
+}

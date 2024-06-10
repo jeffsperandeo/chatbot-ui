@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useState } from "react"
-import { fetchAppointments } from "../api/appointments"
+import React, { useEffect, useState } from "react"
+import fetchAppointments from "./appointments" // Correct import statement
 
 interface Appointment {
   id: string
@@ -7,34 +7,26 @@ interface Appointment {
   startTime: string
 }
 
-const Appointments: FC = () => {
+const Appointments: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([])
-  const [error, setError] = useState<string>("")
+  const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
-
-  const token = localStorage.getItem("authToken") // Retrieve token from local storage
-  console.log("Token retrieved from local storage:", token)
 
   useEffect(() => {
     const getAppointments = async () => {
-      setLoading(true)
       try {
-        const data = await fetchAppointments()
+        const data: Appointment[] = await fetchAppointments()
         setAppointments(data)
       } catch (err) {
-        setError("Failed to fetch appointments.")
+        setError("Error fetching appointments")
+        console.error("Error fetching appointments:", err)
       } finally {
         setLoading(false)
       }
     }
 
-    if (token) {
-      getAppointments()
-    } else {
-      setError("No authentication token found.")
-      setLoading(false)
-    }
-  }, [token])
+    getAppointments()
+  }, [])
 
   if (loading) {
     return <div>Loading...</div>

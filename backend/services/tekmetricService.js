@@ -1,19 +1,16 @@
-// backend/services/tekmetricService.js
 const axios = require('axios');
 require('dotenv').config();
 
 const apiUrl = process.env.TEKMETRIC_API_URL;
-const apiKey = process.env.TEKMETRIC_API_KEY;
 
 const tekmetricsApi = axios.create({
     baseURL: apiUrl,
     headers: {
-        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
     }
 });
 
-async function searchCustomer(query) {
+async function getCustomerDetails(query) {
     try {
         const response = await tekmetricsApi.get('/customers', {
             params: {
@@ -23,40 +20,39 @@ async function searchCustomer(query) {
                 size: 100
             }
         });
-        console.log('Response from /customers endpoint:', response.data);
-        return response.data;
+        console.log(`Raw response from Tekmetric API: ${JSON.stringify(response.data, null, 2)}`);
+        return response.data.content;
     } catch (error) {
-        console.error('Error searching customer:', error);
+        console.error('Error fetching customer details:', error.message);
         throw error;
     }
 }
 
-async function createVehicle(vehicleData) {
+async function createNewVehicle(vehicleData) {
     try {
         const response = await tekmetricsApi.post('/vehicles', vehicleData);
-        console.log('Response from /vehicles endpoint:', response.data);
+        console.log(`Vehicle created: ${JSON.stringify(response.data, null, 2)}`);
         return response.data;
     } catch (error) {
-        console.error('Error creating vehicle:', error);
+        console.error('Error creating vehicle:', error.message);
         throw error;
     }
 }
 
-async function fetchAppointments() {
+async function listAppointments(authToken) {
     try {
+        console.log('Using authToken:', authToken); // Add this line
         const response = await tekmetricsApi.get('/appointments', {
-            params: {
-                shop: 238,
-                page: 0,
-                size: 100
-            }
+            headers: { 'Authorization': `Bearer ${authToken}` },
+            params: { shop: 238 }
         });
-        console.log('Response from /appointments endpoint:', response.data);
+        console.log(`Appointments response: ${JSON.stringify(response.data, null, 2)}`); // Add this line
         return response.data;
     } catch (error) {
-        console.error('Error fetching appointments:', error);
+        console.error('Error fetching appointments:', error.message); // Add this line
+        console.error('Error details:', error.response ? error.response.data : error.message); // Add this line
         throw error;
     }
 }
 
-module.exports = { tekmetricsApi, searchCustomer, createVehicle, fetchAppointments };
+module.exports = { getCustomerDetails, createNewVehicle, listAppointments };

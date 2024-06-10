@@ -1,5 +1,6 @@
 // backend/controllers/dataController.js
 const { searchCustomer, createVehicle, searchVehicleByVin, listAppointments: fetchAppointments } = require('../services/tekmetricService');
+const { getContext } = require('../utils/redisClient'); // Import Redis client
 
 async function getCustomer(req, res) {
     let { search } = req.query;
@@ -39,11 +40,15 @@ async function getVehicleDetails(req, res) {
 }
 
 async function listAppointments(req, res) {
+    console.log('Fetching appointments...'); // Add this line
     try {
-        const appointments = await fetchAppointments();
+        const authToken = await getContext('authToken'); // Retrieve token from Redis
+        console.log('Using authToken:', authToken); // Add this line
+        const appointments = await fetchAppointments(authToken);
+        console.log('Appointments fetched:', appointments); // Add this line
         res.status(200).json(appointments);
     } catch (error) {
-        console.error('Error retrieving appointments:', error);
+        console.error('Error retrieving appointments:', error); // Add this line
         res.status(500).send('Error retrieving appointments');
     }
 }

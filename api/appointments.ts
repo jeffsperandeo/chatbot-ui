@@ -1,6 +1,12 @@
 import axios from 'axios';
 
-export const fetchAppointments = async () => {
+interface Appointment {
+  id: string;
+  title: string;
+  startTime: string;
+}
+
+const fetchAppointments = async (): Promise<Appointment[]> => {
     const token = localStorage.getItem('authToken'); // Retrieve token from local storage
     console.log('Token retrieved from local storage:', token);
     if (!token) {
@@ -8,8 +14,11 @@ export const fetchAppointments = async () => {
     }
     const response = await axios.get('/api/appointments', {
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json'
         }
     });
-    return response.data;
+    return response.data as Appointment[];
 };
+
+export default fetchAppointments;

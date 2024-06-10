@@ -1,0 +1,26 @@
+{
+    "sourceFile": "__tests__/playwright-test/tests/login.spec.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1718022289031,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1718022300097,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,8 @@\n-import { test, expect, Page } from '@playwright/test';\n+import { test, expect } from '@playwright/test';\n+import { Page } from 'playwright';\n \n+\n test('start chatting is displayed', async ({ page }: { page: Page }) => {\n   await page.goto('http://localhost:3000/');\n   await expect(page.getByRole('link', { name: 'Start Chatting' })).toBeVisible();\n });\n"
+                },
+                {
+                    "date": 1718022305168,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,6 @@\n-import { test, expect } from '@playwright/test';\n-import { Page } from 'playwright';\n+import { test, expect, Page } from '@playwright/test';\n \n-\n test('start chatting is displayed', async ({ page }: { page: Page }) => {\n   await page.goto('http://localhost:3000/');\n   await expect(page.getByRole('link', { name: 'Start Chatting' })).toBeVisible();\n });\n"
+                }
+            ],
+            "date": 1718022289031,
+            "name": "Commit-0",
+            "content": "import { test, expect, Page } from '@playwright/test';\n\ntest('start chatting is displayed', async ({ page }: { page: Page }) => {\n  await page.goto('http://localhost:3000/');\n  await expect(page.getByRole('link', { name: 'Start Chatting' })).toBeVisible();\n});\n\ntest('No password error message', async ({ page }: { page: Page }) => {\n  await page.goto('http://localhost:3000/login');\n  await page.getByPlaceholder('you@example.com').fill('dummyemail@gmail.com');\n  await page.getByRole('button', { name: 'Login' }).click();\n  await page.waitForLoadState('networkidle');\n  await expect(page.getByText('Invalid login credentials')).toBeVisible();\n});\n\ntest('No password for signup', async ({ page }: { page: Page }) => {\n  await page.goto('http://localhost:3000/login');\n  await page.getByPlaceholder('you@example.com').fill('dummyEmail@Gmail.com');\n  await page.getByRole('button', { name: 'Sign Up' }).click();\n  await expect(page.getByText('Signup requires a valid')).toBeVisible();\n});\n\ntest('invalid username for signup', async ({ page }: { page: Page }) => {\n  await page.goto('http://localhost:3000/login');\n  await page.getByPlaceholder('you@example.com').fill('dummyEmail');\n  await page.getByPlaceholder('••••••••').fill('dummypassword');\n  await page.getByRole('button', { name: 'Sign Up' }).click();\n  await expect(page.getByText('Unable to validate email')).toBeVisible();\n});\n\ntest('password reset message', async ({ page }: { page: Page }) => {\n  await page.goto('http://localhost:3000/login');\n  await page.getByPlaceholder('you@example.com').fill('demo@gmail.com');\n  await page.getByRole('button', { name: 'Reset' }).click();\n  await expect(page.getByText('Check email to reset password')).toBeVisible();\n});\n"
+        }
+    ]
+}
