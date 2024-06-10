@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import fetchAppointments from "./appointments" // Correct import statement
+import fetchAppointments from "../api/appointments" // Corrected the import path
 
 interface Appointment {
   id: string

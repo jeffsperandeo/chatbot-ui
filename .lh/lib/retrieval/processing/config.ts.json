@@ -1,0 +1,18 @@
+{
+    "sourceFile": "lib/retrieval/processing/config.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1718050527480,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1718050527480,
+            "name": "Commit-0",
+            "content": "export const CHUNK_OVERLAP = 200;\nexport const CHUNK_SIZE = 1000;\n"
+        }
+    ]
+}

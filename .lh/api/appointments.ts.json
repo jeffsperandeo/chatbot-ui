@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 5,
+            "activePatchIndex": 7,
             "patches": [
                 {
                     "date": 1717813079415,
@@ -28,6 +28,14 @@
                 {
                     "date": 1718022031642,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,8 +17,8 @@\n             'Authorization': `Bearer ${token}`,\n             'Accept': 'application/json'\n         }\n     });\n-    return response.data;\n+    return response.data as Appointment[];\n };\n \n export default fetchAppointments;\n"
+                },
+                {
+                    "date": 1718043186886,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,19 +6,19 @@\n   startTime: string;\n }\n \n const fetchAppointments = async (): Promise<Appointment[]> => {\n-    const token = localStorage.getItem('authToken'); // Retrieve token from local storage\n-    console.log('Token retrieved from local storage:', token);\n-    if (!token) {\n-        throw new Error('No authentication token found.');\n+  const token = localStorage.getItem('authToken'); // Retrieve token from local storage\n+  console.log('Token retrieved from local storage:', token);\n+  if (!token) {\n+    throw new Error('No authentication token found.');\n+  }\n+  const response = await axios.get('/api/appointments', {\n+    headers: {\n+      'Authorization': `Bearer ${token}`,\n+      'Accept': 'application/json'\n     }\n-    const response = await axios.get('/api/appointments', {\n-        headers: {\n-            'Authorization': `Bearer ${token}`,\n-            'Accept': 'application/json'\n-        }\n-    });\n-    return response.data as Appointment[];\n-};\n+  });\n+  return response.data as Appointment[];\n+}\n \n export default fetchAppointments;\n"
+                },
+                {
+                    "date": 1718043578027,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,9 +7,8 @@\n }\n \n const fetchAppointments = async (): Promise<Appointment[]> => {\n   const token = localStorage.getItem('authToken'); // Retrieve token from local storage\n-  console.log('Token retrieved from local storage:', token);\n   if (!token) {\n     throw new Error('No authentication token found.');\n   }\n   const response = await axios.get('/api/appointments', {\n@@ -18,7 +17,7 @@\n       'Accept': 'application/json'\n     }\n   });\n   return response.data as Appointment[];\n-}\n+};\n \n export default fetchAppointments;\n"
                 }
             ],
             "date": 1717813079415,

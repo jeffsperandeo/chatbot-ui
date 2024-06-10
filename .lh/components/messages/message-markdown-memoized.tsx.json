@@ -1,0 +1,78 @@
+{
+    "sourceFile": "components/messages/message-markdown-memoized.tsx",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 15,
+            "patches": [
+                {
+                    "date": 1718043921093,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1718043953455,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,7 @@\n import { FC, memo } from \"react\"\n-import ReactMarkdown, { Options } from \"react-markdown\";\n+import ReactMarkdown, { Options } from \"react-markdown\"\n \n-\n export const MessageMarkdownMemoized: FC<Options> = memo(\n   ReactMarkdown,\n   (prevProps, nextProps) =>\n     prevProps.children === nextProps.children &&\n"
+                },
+                {
+                    "date": 1718043964639,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,9 @@\n import { FC, memo } from \"react\"\n-import ReactMarkdown, { Options } from \"react-markdown\"\n+import ReactMarkdown, { ReactMarkdownProps } from \"react-markdown/lib/react-markdown\"\n+import { Options } from \"react-markdown/lib/react-markdown.types\"\n \n+\n export const MessageMarkdownMemoized: FC<Options> = memo(\n   ReactMarkdown,\n   (prevProps, nextProps) =>\n     prevProps.children === nextProps.children &&\n"
+                },
+                {
+                    "date": 1718043973587,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,7 @@\n import { FC, memo } from \"react\"\n-import ReactMarkdown, { ReactMarkdownProps } from \"react-markdown/lib/react-markdown\"\n-import { Options } from \"react-markdown/lib/react-markdown.types\"\n+import ReactMarkdown, { Options } from \"react-markdown\"\n \n-\n export const MessageMarkdownMemoized: FC<Options> = memo(\n   ReactMarkdown,\n   (prevProps, nextProps) =>\n     prevProps.children === nextProps.children &&\n"
+                },
+                {
+                    "date": 1718044011161,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,9 @@\n import { FC, memo } from \"react\"\n-import ReactMarkdown, { Options } from \"react-markdown\"\n+import ReactMarkdown, { ReactMarkdownProps } from \"react-markdown/lib/react-markdown\"\n+import { Options } from \"react-markdown/lib/react-markdown.types\"\n \n+\n export const MessageMarkdownMemoized: FC<Options> = memo(\n   ReactMarkdown,\n   (prevProps, nextProps) =>\n     prevProps.children === nextProps.children &&\n"
+                },
+                {
+                    "date": 1718044019113,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,7 @@\n import { FC, memo } from \"react\"\n-import ReactMarkdown, { ReactMarkdownProps } from \"react-markdown/lib/react-markdown\"\n+import ReactMarkdown from \"react-markdown\"\n+import { ReactMarkdownProps } from \"react-markdown/lib/react-markdown.types\"\n import { Options } from \"react-markdown/lib/react-markdown.types\"\n \n \n export const MessageMarkdownMemoized: FC<Options> = memo(\n"
+                },
+                {
+                    "date": 1718045244281,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,12 +1,20 @@\n-import { FC, memo } from \"react\"\n-import ReactMarkdown from \"react-markdown\"\n-import { ReactMarkdownProps } from \"react-markdown/lib/react-markdown.types\"\n-import { Options } from \"react-markdown/lib/react-markdown.types\"\n+import { FC, memo, useEffect, useState } from \"react\";\n \n+const MessageMarkdownMemoized: FC<{ content: string, className?: string }> = memo(\n+  ({ content, className }) => {\n+    const [ReactMarkdown, setReactMarkdown] = useState<any>(null);\n \n-export const MessageMarkdownMemoized: FC<Options> = memo(\n-  ReactMarkdown,\n+    useEffect(() => {\n+      import(\"react-markdown\").then(module => setReactMarkdown(() => module.default));\n+    }, []);\n+\n+    if (!ReactMarkdown) return null;\n+\n+    return <ReactMarkdown className={className}>{content}</ReactMarkdown>;\n+  },\n   (prevProps, nextProps) =>\n-    prevProps.children === nextProps.children &&\n+    prevProps.content === nextProps.content &&\n     prevProps.className === nextProps.className\n-)\n+);\n+\n+export default MessageMarkdownMemoized;\n"
+                },
+                {
+                    "date": 1718046735106,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,20 +1,20 @@\n import { FC, memo, useEffect, useState } from \"react\";\n \n-const MessageMarkdownMemoized: FC<{ content: string, className?: string }> = memo(\n-  ({ content, className }) => {\n+const MessageMarkdownMemoized: FC<{ children: string; className?: string }> = memo(\n+  ({ children, className }) => {\n     const [ReactMarkdown, setReactMarkdown] = useState<any>(null);\n \n     useEffect(() => {\n       import(\"react-markdown\").then(module => setReactMarkdown(() => module.default));\n     }, []);\n \n     if (!ReactMarkdown) return null;\n \n-    return <ReactMarkdown className={className}>{content}</ReactMarkdown>;\n+    return <ReactMarkdown className={className}>{children}</ReactMarkdown>;\n   },\n   (prevProps, nextProps) =>\n-    prevProps.content === nextProps.content &&\n+    prevProps.children === nextProps.children &&\n     prevProps.className === nextProps.className\n );\n \n-export default MessageMarkdownMemoized;\n+export default MessageMarkdownMemoized;\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1718048797727,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,20 +1,20 @@\n-import { FC, memo, useEffect, useState } from \"react\";\n+import React, { FC } from \"react\";\n+import ReactMarkdown from \"react-markdown\";\n+import remarkGfm from \"remark-gfm\";\n+import remarkMath from \"remark-math\";\n \n-const MessageMarkdownMemoized: FC<{ children: string; className?: string }> = memo(\n-  ({ children, className }) => {\n-    const [ReactMarkdown, setReactMarkdown] = useState<any>(null);\n+interface MessageMarkdownMemoizedProps {\n+  children: string;\n+  remarkPlugins: any[];\n+  components: any;\n+}\n \n-    useEffect(() => {\n-      import(\"react-markdown\").then(module => setReactMarkdown(() => module.default));\n-    }, []);\n+const MessageMarkdownMemoized: FC<MessageMarkdownMemoizedProps> = ({ children, remarkPlugins, components }) => {\n+  return (\n\\ No newline at end of file\n+    <ReactMarkdown remarkPlugins={remarkPlugins} components={components}>\n+      {children}\n+    </ReactMarkdown>\n+  );\n+};\n \n-    if (!ReactMarkdown) return null;\n-\n-    return <ReactMarkdown className={className}>{children}</ReactMarkdown>;\n-  },\n-  (prevProps, nextProps) =>\n-    prevProps.children === nextProps.children &&\n-    prevProps.className === nextProps.className\n-);\n-\n-export default MessageMarkdownMemoized;\n+export default React.memo(MessageMarkdownMemoized);\n"
+                },
+                {
+                    "date": 1718049159273,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,6 @@\n-import React, { FC } from \"react\";\n+import React, { FC, useEffect, useState } from \"react\";\n import ReactMarkdown from \"react-markdown\";\n-import remarkGfm from \"remark-gfm\";\n-import remarkMath from \"remark-math\";\n \n interface MessageMarkdownMemoizedProps {\n   children: string;\n   remarkPlugins: any[];\n@@ -16,5 +14,5 @@\n     </ReactMarkdown>\n   );\n };\n \n-export default React.memo(MessageMarkdownMemoized);\n\\ No newline at end of file\n+export default React.memo(MessageMarkdownMemoized);\n"
+                },
+                {
+                    "date": 1718049206723,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-import React, { FC, useEffect, useState } from \"react\";\n+import React, { FC, memo } from \"react\";\n import ReactMarkdown from \"react-markdown\";\n \n interface MessageMarkdownMemoizedProps {\n   children: string;\n@@ -14,5 +14,5 @@\n     </ReactMarkdown>\n   );\n };\n \n-export default React.memo(MessageMarkdownMemoized);\n+export default memo(MessageMarkdownMemoized);\n"
+                },
+                {
+                    "date": 1718049236199,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n-import React, { FC, memo } from \"react\";\n-import ReactMarkdown from \"react-markdown\";\n+import React, { FC, useEffect, useState } from \"react\";\n+import ReactMarkdown from \"react-markdown/lib/react-markdown\";\n \n interface MessageMarkdownMemoizedProps {\n   children: string;\n   remarkPlugins: any[];\n@@ -14,5 +14,5 @@\n     </ReactMarkdown>\n   );\n };\n \n-export default memo(MessageMarkdownMemoized);\n+export default React.memo(MessageMarkdownMemoized);\n"
+                },
+                {
+                    "date": 1718049251745,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n import React, { FC, useEffect, useState } from \"react\";\n-import ReactMarkdown from \"react-markdown/lib/react-markdown\";\n+import ReactMarkdown from \"react-markdown\";\n \n interface MessageMarkdownMemoizedProps {\n   children: string;\n   remarkPlugins: any[];\n"
+                },
+                {
+                    "date": 1718049363209,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n import React, { FC, useEffect, useState } from \"react\";\n-import ReactMarkdown from \"react-markdown\";\n+import ReactMarkdown from \"react-markdown/lib/react-markdown\";\n \n interface MessageMarkdownMemoizedProps {\n   children: string;\n   remarkPlugins: any[];\n"
+                },
+                {
+                    "date": 1718049456473,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n import React, { FC, useEffect, useState } from \"react\";\n-import ReactMarkdown from \"react-markdown/lib/react-markdown\";\n+import ReactMarkdown from \"react-markdown\";\n \n interface MessageMarkdownMemoizedProps {\n   children: string;\n   remarkPlugins: any[];\n"
+                },
+                {
+                    "date": 1718049468980,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,14 +1,21 @@\n import React, { FC, useEffect, useState } from \"react\";\n-import ReactMarkdown from \"react-markdown\";\n \n interface MessageMarkdownMemoizedProps {\n   children: string;\n   remarkPlugins: any[];\n   components: any;\n }\n \n const MessageMarkdownMemoized: FC<MessageMarkdownMemoizedProps> = ({ children, remarkPlugins, components }) => {\n+  const [ReactMarkdown, setReactMarkdown] = useState<any>(null);\n+\n+  useEffect(() => {\n+    import(\"react-markdown\").then(module => setReactMarkdown(() => module.default));\n+  }, []);\n+\n+  if (!ReactMarkdown) return null;\n+\n   return (\n     <ReactMarkdown remarkPlugins={remarkPlugins} components={components}>\n       {children}\n     </ReactMarkdown>\n"
+                }
+            ],
+            "date": 1718043921093,
+            "name": "Commit-0",
+            "content": "import { FC, memo } from \"react\"\nimport ReactMarkdown, { Options } from \"react-markdown\";\n\n\nexport const MessageMarkdownMemoized: FC<Options> = memo(\n  ReactMarkdown,\n  (prevProps, nextProps) =>\n    prevProps.children === nextProps.children &&\n    prevProps.className === nextProps.className\n)\n"
+        }
+    ]
+}

@@ -1,26 +1,43 @@
-import React, { FC } from "react"
-import remarkGfm from "remark-gfm"
-import remarkMath from "remark-math"
+import React, { FC, useEffect, useState } from "react"
 import { MessageCodeBlock } from "./message-codeblock"
-import { MessageMarkdownMemoized } from "./message-markdown-memoized"
+import MessageMarkdownMemoized from "./message-markdown-memoized"
 
 interface MessageMarkdownProps {
   content: string
 }
 
 export const MessageMarkdown: FC<MessageMarkdownProps> = ({ content }) => {
+  const [remarkGfm, setRemarkGfm] = useState<any>(null)
+  const [remarkMath, setRemarkMath] = useState<any>(null)
+
+  useEffect(() => {
+    import("remark-gfm").then(module => setRemarkGfm(() => module.default))
+    import("remark-math").then(module => setRemarkMath(() => module.default))
+  }, [])
+
+  if (!remarkGfm || !remarkMath) return null
+
   return (
     <MessageMarkdownMemoized
-      className="prose dark:prose-invert prose-p:leading-relaxed prose-pre:p-0 min-w-full space-y-6 break-words"
       remarkPlugins={[remarkGfm, remarkMath]}
       components={{
-        p({ children }) {
+        p: ({ children }: { children: React.ReactNode }) => {
           return <p className="mb-2 last:mb-0">{children}</p>
         },
-        img({ node, ...props }) {
+        img: ({ node, ...props }: { node: any; [key: string]: any }) => {
           return <img className="max-w-[67%]" {...props} />
         },
-        code({ node, className, children, ...props }) {
+        code: ({
+          node,
+          className,
+          children,
+          ...props
+        }: {
+          node: any
+          className: string
+          children: React.ReactNode
+          [key: string]: any
+        }) => {
           const childArray = React.Children.toArray(children)
           const firstChild = childArray[0] as React.ReactElement
           const firstChildAsString = React.isValidElement(firstChild)

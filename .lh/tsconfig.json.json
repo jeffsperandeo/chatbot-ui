@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 6,
+            "activePatchIndex": 7,
             "patches": [
                 {
                     "date": 1717940116351,
@@ -32,6 +32,10 @@
                 {
                     "date": 1718022690406,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,15 +1,19 @@\n {\n   \"compilerOptions\": {\n     \"target\": \"ESNext\",\n-    \"lib\": [\"dom\", \"dom.iterable\", \"esnext\"],\n+    \"lib\": [\n+      \"dom\",\n+      \"dom.iterable\",\n+      \"esnext\"\n+    ],\n     \"allowJs\": true,\n     \"skipLibCheck\": true,\n     \"strict\": true,\n     \"noEmit\": true,\n     \"esModuleInterop\": true,\n     \"allowSyntheticDefaultImports\": true,\n-    \"module\": \"esnext\",\n+    \"module\": \"Node16\",\n     \"moduleResolution\": \"node16\",\n     \"resolveJsonModule\": true,\n     \"isolatedModules\": true,\n     \"jsx\": \"preserve\",\n@@ -19,11 +23,16 @@\n         \"name\": \"next\"\n       }\n     ],\n     \"paths\": {\n-      \"@/*\": [\"./*\"]\n+      \"@/*\": [\n+        \"./*\"\n+      ]\n     },\n-    \"typeRoots\": [\"./typings\", \"./node_modules/@types\"]\n+    \"typeRoots\": [\n+      \"./typings\",\n+      \"./node_modules/@types\"\n+    ]\n   },\n   \"include\": [\n     \"next-env.d.ts\",\n     \"**/*.ts\",\n@@ -36,6 +45,8 @@\n     \"lib/**/*\",\n     \"types/**/*\",\n     \"__tests__/**/*\"\n   ],\n-  \"exclude\": [\"node_modules\"]\n+  \"exclude\": [\n+    \"node_modules\"\n+  ]\n }\n"
+                },
+                {
+                    "date": 1718051034547,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,8 +17,9 @@\n     \"resolveJsonModule\": true,\n     \"isolatedModules\": true,\n     \"jsx\": \"preserve\",\n     \"incremental\": true,\n+    \"allowImportingTsExtensions\": true,  // Add this line\n     \"plugins\": [\n       {\n         \"name\": \"next\"\n       }\n"
                 }
             ],
             "date": 1717940116351,

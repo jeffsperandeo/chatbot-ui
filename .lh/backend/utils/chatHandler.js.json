@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 17,
+            "activePatchIndex": 18,
             "patches": [
                 {
                     "date": 1717794863892,
@@ -76,6 +76,10 @@
                 {
                     "date": 1718028297971,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,8 +5,9 @@\n     const parsedCommand = parseCommand(input);\n \n     if (parsedCommand) {\n         const { command, endpoint, details } = parsedCommand;\n+        console.log(`Parsed command: ${command}, Endpoint: ${endpoint}, Details: ${details}`); // Add this line\n \n         switch (command) {\n             case \"Get vehicle details for VIN\":\n                 return await getVehicleDetails(details, authToken);\n"
+                },
+                {
+                    "date": 1718044930076,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n     const parsedCommand = parseCommand(input);\n \n     if (parsedCommand) {\n         const { command, endpoint, details } = parsedCommand;\n-        console.log(`Parsed command: ${command}, Endpoint: ${endpoint}, Details: ${details}`); // Add this line\n+        console.log(`Parsed command: ${command}, Endpoint: ${endpoint}, Details: ${details}`);\n \n         switch (command) {\n             case \"Get vehicle details for VIN\":\n                 return await getVehicleDetails(details, authToken);\n"
                 }
             ],
             "date": 1717794863892,

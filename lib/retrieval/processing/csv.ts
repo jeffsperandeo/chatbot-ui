@@ -1,10 +1,13 @@
-import { FileItemChunk } from "@/types"
-import { encode } from "gpt-tokenizer"
-import { CSVLoader } from "langchain/document_loaders/fs/csv"
-import { RecursiveCharacterTextSplitter } from "langchain/text_splitter"
-import { CHUNK_OVERLAP, CHUNK_SIZE } from "."
+export const processCSV = async (
+  csv: Blob
+): Promise<{ content: string; tokens: number }[]> => {
+  const { CSVLoader } = await import("langchain/document_loaders/fs/csv")
+  const { RecursiveCharacterTextSplitter } = await import(
+    "langchain/text_splitter"
+  )
+  const { encode } = await import("gpt-tokenizer")
+  const { CHUNK_OVERLAP, CHUNK_SIZE } = await import("./config.ts")
 
-export const processCSV = async (csv: Blob): Promise<FileItemChunk[]> => {
   const loader = new CSVLoader(csv)
   const docs = await loader.load()
   let completeText = docs.map(doc => doc.pageContent).join("\n\n")
@@ -16,7 +19,7 @@ export const processCSV = async (csv: Blob): Promise<FileItemChunk[]> => {
   })
   const splitDocs = await splitter.createDocuments([completeText])
 
-  let chunks: FileItemChunk[] = []
+  let chunks: { content: string; tokens: number }[] = []
 
   for (let i = 0; i < splitDocs.length; i++) {
     const doc = splitDocs[i]

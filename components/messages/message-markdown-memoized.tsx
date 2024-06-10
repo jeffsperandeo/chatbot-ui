@@ -1,9 +1,31 @@
-import { FC, memo } from "react"
-import ReactMarkdown, { Options } from "react-markdown"
+import React, { FC, useEffect, useState } from "react"
 
-export const MessageMarkdownMemoized: FC<Options> = memo(
-  ReactMarkdown,
-  (prevProps, nextProps) =>
-    prevProps.children === nextProps.children &&
-    prevProps.className === nextProps.className
-)
+interface MessageMarkdownMemoizedProps {
+  children: string
+  remarkPlugins: any[]
+  components: any
+}
+
+const MessageMarkdownMemoized: FC<MessageMarkdownMemoizedProps> = ({
+  children,
+  remarkPlugins,
+  components
+}) => {
+  const [ReactMarkdown, setReactMarkdown] = useState<any>(null)
+
+  useEffect(() => {
+    import("react-markdown").then(module =>
+      setReactMarkdown(() => module.default)
+    )
+  }, [])
+
+  if (!ReactMarkdown) return null
+
+  return (
+    <ReactMarkdown remarkPlugins={remarkPlugins} components={components}>
+      {children}
+    </ReactMarkdown>
+  )
+}
+
+export default React.memo(MessageMarkdownMemoized)

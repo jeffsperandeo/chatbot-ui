@@ -6,7 +6,7 @@ async function handleUserInput(input, userId, authToken) {
 
     if (parsedCommand) {
         const { command, endpoint, details } = parsedCommand;
-        console.log(`Parsed command: ${command}, Endpoint: ${endpoint}, Details: ${details}`); // Add this line
+        console.log(`Parsed command: ${command}, Endpoint: ${endpoint}, Details: ${details}`);
 
         switch (command) {
             case "Get vehicle details for VIN":

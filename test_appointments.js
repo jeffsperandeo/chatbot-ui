@@ -2,7 +2,7 @@ const axios = require('axios');
 require('dotenv').config();
 
 const apiUrl = process.env.TEKMETRIC_API_URL;
-const authToken = process.env.TEKMETRIC_API_KEY; // Use the actual token
+const authToken = 'your_token_here'; // Replace with the actual token
 
 async function testAppointments() {
     try {
@@ -10,8 +10,7 @@ async function testAppointments() {
             headers: {
                 'Authorization': `Bearer ${authToken}`,
                 'Content-Type': 'application/json'
-            },
-            params: { shop: 238 }
+            }
         });
         console.log('Appointments:', response.data);
     } catch (error) {

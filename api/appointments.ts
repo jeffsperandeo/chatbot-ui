@@ -7,18 +7,17 @@ interface Appointment {
 }
 
 const fetchAppointments = async (): Promise<Appointment[]> => {
-    const token = localStorage.getItem('authToken'); // Retrieve token from local storage
-    console.log('Token retrieved from local storage:', token);
-    if (!token) {
-        throw new Error('No authentication token found.');
+  const token = localStorage.getItem('authToken'); // Retrieve token from local storage
+  if (!token) {
+    throw new Error('No authentication token found.');
+  }
+  const response = await axios.get('/api/appointments', {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
     }
-    const response = await axios.get('/api/appointments', {
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Accept': 'application/json'
-        }
-    });
-    return response.data as Appointment[];
+  });
+  return response.data as Appointment[];
 };
 
 export default fetchAppointments;

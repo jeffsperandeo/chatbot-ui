@@ -1,0 +1,22 @@
+{
+    "sourceFile": "lib/retrieval/processing/md.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1718047625015,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1718047651287,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,8 +5,11 @@\n   const fileBuffer = Buffer.from(await markdown.arrayBuffer());\n   const textDecoder = new TextDecoder(\"utf-8\");\n   const textContent = textDecoder.decode(fileBuffer);\n \n+  const CHUNK_SIZE = 1000; // Define CHUNK_SIZE here\n+  const CHUNK_OVERLAP = 200; // Define CHUNK_OVERLAP here\n+\n   const splitter = RecursiveCharacterTextSplitter.fromLanguage(\"markdown\", {\n     chunkSize: CHUNK_SIZE,\n     chunkOverlap: CHUNK_OVERLAP\n   });\n"
+                }
+            ],
+            "date": 1718047625015,
+            "name": "Commit-0",
+            "content": "export const processMarkdown = async (markdown: Blob): Promise<{ content: string; tokens: number }[]> => {\n  const { encode } = await import(\"gpt-tokenizer\");\n  const { RecursiveCharacterTextSplitter } = await import(\"langchain/text_splitter\");\n\n  const fileBuffer = Buffer.from(await markdown.arrayBuffer());\n  const textDecoder = new TextDecoder(\"utf-8\");\n  const textContent = textDecoder.decode(fileBuffer);\n\n  const splitter = RecursiveCharacterTextSplitter.fromLanguage(\"markdown\", {\n    chunkSize: CHUNK_SIZE,\n    chunkOverlap: CHUNK_OVERLAP\n  });\n\n  const splitDocs = await splitter.createDocuments([textContent]);\n\n  let chunks: { content: string; tokens: number }[] = [];\n\n  for (let i = 0; i < splitDocs.length; i++) {\n    const doc = splitDocs[i];\n\n    chunks.push({\n      content: doc.pageContent,\n      tokens: encode(doc.pageContent).length\n    });\n  }\n\n  return chunks;\n};\n"
+        }
+    ]
+}

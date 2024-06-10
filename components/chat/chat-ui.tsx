@@ -1,4 +1,3 @@
-import Loading from "@/app/[locale]/loading"
 import { useChatHandler } from "@/components/chat/chat-hooks/use-chat-handler"
 import { ChatbotUIContext } from "@/context/context"
 import { getAssistantToolsByAssistantId } from "@/db/assistant-tools"
@@ -182,7 +181,7 @@ export const ChatUI: FC<ChatUIProps> = ({}) => {
   }
 
   if (loading) {
-    return <Loading />
+    return <div>Loading...</div>
   }
 
   return (

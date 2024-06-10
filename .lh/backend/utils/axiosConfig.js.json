@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 10,
+            "activePatchIndex": 13,
             "patches": [
                 {
                     "date": 1717795438311,
@@ -48,6 +48,18 @@
                 {
                     "date": 1717798393145,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,27 +1,4 @@\n-// backend/utils/axiosConfig.js\n+// utils/axiosConfig.js\n+const { tekmetricsApi } = require('../services/tekmetricService');\n \n-const axios = require('axios');\n-const { getAuthToken } = require('../services/authService'); // Import the getAuthToken function from the authService module\n-\n-const axiosInstance = axios.create({\n-    baseURL: 'https://api.tekmetrics.com', // Replace with your actual API base URL\n-    headers: {\n-        'Content-Type': 'application/json',\n-    }\n-});\n-\n-// Request interceptor to add auth token to headers\n-axiosInstance.interceptors.request.use(\n-    async (config) => {\n-        const token = await getAuthToken(); // Fetch the token using your auth service\n-        if (token) {\n-            config.headers.Authorization = `Bearer ${token}`;\n-        }\n-        return config;\n-    },\n-    (error) => {\n-        return Promise.reject(error);\n-    }\n-);\n\\ No newline at end of file\n-\n-module.exports = axiosInstance;\n+module.exports = tekmetricsApi;\n"
+                },
+                {
+                    "date": 1718042149894,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,3 @@\n-// utils/axiosConfig.js\n const { tekmetricsApi } = require('../services/tekmetricService');\n \n module.exports = tekmetricsApi;\n"
+                },
+                {
+                    "date": 1718042155878,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,3 +1,4 @@\n+// utils/axiosConfig.js\n const { tekmetricsApi } = require('../services/tekmetricService');\n \n module.exports = tekmetricsApi;\n"
+                },
+                {
+                    "date": 1718045383326,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,3 @@\n-// utils/axiosConfig.js\n const { tekmetricsApi } = require('../services/tekmetricService');\n \n module.exports = tekmetricsApi;\n"
                 }
             ],
             "date": 1717795438311,

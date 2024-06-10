@@ -2,10 +2,12 @@ const axios = require('axios');
 require('dotenv').config();
 
 const apiUrl = process.env.TEKMETRIC_API_URL;
+const apiKey = process.env.TEKMETRIC_API_KEY;
 
 const tekmetricsApi = axios.create({
     baseURL: apiUrl,
     headers: {
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
     }
 });
@@ -41,16 +43,15 @@ async function createNewVehicle(vehicleData) {
 
 async function listAppointments(authToken) {
     try {
-        console.log('Using authToken:', authToken); // Add this line
+        console.log('Using authToken:', authToken);
         const response = await tekmetricsApi.get('/appointments', {
-            headers: { 'Authorization': `Bearer ${authToken}` },
-            params: { shop: 238 }
+            headers: { 'Authorization': `Bearer ${authToken}` }
         });
-        console.log(`Appointments response: ${JSON.stringify(response.data, null, 2)}`); // Add this line
+        console.log(`Appointments response: ${JSON.stringify(response.data, null, 2)}`);
         return response.data;
     } catch (error) {
-        console.error('Error fetching appointments:', error.message); // Add this line
-        console.error('Error details:', error.response ? error.response.data : error.message); // Add this line
+        console.error('Error fetching appointments:', error.message);
+        console.error('Error details:', error.response ? error.response.data : error.message);
         throw error;
     }
 }
