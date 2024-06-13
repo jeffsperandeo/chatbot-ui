@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 10,
+            "activePatchIndex": 11,
             "patches": [
                 {
                     "date": 1717879384309,
@@ -48,6 +48,10 @@
                 {
                     "date": 1718133846574,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,39 +32,4 @@\n     }\n }\n \n module.exports = { storeContext, getContext };\n-const redis = require('redis');\n-require('dotenv').config();\n-\n-const client = redis.createClient({\n-    url: process.env.REDIS_URL\n-});\n-\n-client.on('error', (err) => console.log('Redis Client Error', err));\n-\n-client.connect().then(() => {\n-    console.log('Connected to Redis');\n-}).catch(err => {\n-    console.error('Error connecting to Redis', err);\n-});\n-\n-async function storeContext(key, value) {\n-    try {\n-        await client.set(key, value);\n-        console.log('Context stored successfully:', key, value);\n-    } catch (err) {\n-        console.error('Error storing context:', key, err);\n-    }\n-}\n-\n-async function getContext(key) {\n-    try {\n-        const value = await client.get(key);\n-        console.log('Context retrieved successfully:', key, value);\n-        return value;\n-    } catch (err) {\n-        console.error('Error retrieving context:', key, err);\n-    }\n-}\n-\n-module.exports = { storeContext, getContext };\n"
+                },
+                {
+                    "date": 1718274711407,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,5 @@\n+// redisClient.js\n const redis = require('redis');\n require('dotenv').config();\n \n const client = redis.createClient({\n@@ -14,9 +15,9 @@\n });\n \n async function storeContext(key, value) {\n     try {\n-        await client.set(key, value);\n+        await client.set(key, JSON.stringify(value));\n         console.log('Context stored successfully:', key, value);\n     } catch (err) {\n         console.error('Error storing context:', key, err);\n     }\n@@ -25,9 +26,9 @@\n async function getContext(key) {\n     try {\n         const value = await client.get(key);\n         console.log('Context retrieved successfully:', key, value);\n-        return value;\n+        return JSON.parse(value);\n     } catch (err) {\n         console.error('Error retrieving context:', key, err);\n     }\n }\n"
                 }
             ],
             "date": 1717879384309,

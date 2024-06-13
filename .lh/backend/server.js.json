@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 9,
+            "activePatchIndex": 10,
             "patches": [
                 {
                     "date": 1717878815138,
@@ -44,6 +44,10 @@
                 {
                     "date": 1718053605493,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,9 +7,9 @@\n const assistantsRoutes = require('./routes/assistantsRoutes');\n const chatRoutes = require('./routes/chatRoutes');\n const commandRoutes = require('./routes/commandRoutes');\n const { storeContext, getContext } = require('./utils/redisClient');\n-const supabase = require('./supabaseClient');\n+const supabase = require('./supabaseclient');\n require('dotenv').config();\n \n const app = express();\n const PORT = process.env.PORT || 3002;\n"
+                },
+                {
+                    "date": 1718274791584,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-// backend/server.js\n+// server.js\n const express = require('express');\n const bodyParser = require('body-parser');\n const { createProxyMiddleware } = require('http-proxy-middleware');\n const authRoutes = require('./routes/authRoutes');\n"
                 }
             ],
             "date": 1717878815138,

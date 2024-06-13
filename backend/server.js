@@ -1,4 +1,4 @@
-// backend/server.js
+// server.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const { createProxyMiddleware } = require('http-proxy-middleware');

@@ -1,3 +1,4 @@
+// redisClient.js
 const redis = require('redis');
 require('dotenv').config();
 
@@ -15,7 +16,7 @@ client.connect().then(() => {
 
 async function storeContext(key, value) {
     try {
-        await client.set(key, value);
+        await client.set(key, JSON.stringify(value));
         console.log('Context stored successfully:', key, value);
     } catch (err) {
         console.error('Error storing context:', key, err);
@@ -26,7 +27,7 @@ async function getContext(key) {
     try {
         const value = await client.get(key);
         console.log('Context retrieved successfully:', key, value);
-        return value;
+        return JSON.parse(value);
     } catch (err) {
         console.error('Error retrieving context:', key, err);
     }
