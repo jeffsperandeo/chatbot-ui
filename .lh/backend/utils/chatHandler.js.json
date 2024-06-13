@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 18,
+            "activePatchIndex": 25,
             "patches": [
                 {
                     "date": 1717794863892,
@@ -80,6 +80,34 @@
                 {
                     "date": 1718044930076,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n     const parsedCommand = parseCommand(input);\n \n     if (parsedCommand) {\n         const { command, endpoint, details } = parsedCommand;\n-        console.log(`Parsed command: ${command}, Endpoint: ${endpoint}, Details: ${details}`); // Add this line\n+        console.log(`Parsed command: ${command}, Endpoint: ${endpoint}, Details: ${details}`);\n \n         switch (command) {\n             case \"Get vehicle details for VIN\":\n                 return await getVehicleDetails(details, authToken);\n"
+                },
+                {
+                    "date": 1718277437867,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -87,31 +87,5 @@\n             headers: { 'Authorization': `Bearer ${authToken}` }\n         });\n         return response.data;\n     } catch (error) {\n-        return `Error updating job status: ${error.message}`;\n-    }\n-}\n-\n-async function getCustomerDetails(id, authToken) {\n-    try {\n-        const response = await tekmetricsApi.get(`/customers/${id}`, {\n-            headers: { 'Authorization': `Bearer ${authToken}` }\n-        });\n-        return response.data;\n-    } catch (error) {\n-        return `Error fetching customer details: ${error.message}`;\n-    }\n-}\n-\n-async function listAppointments(authToken) {\n-    try {\n-        const response = await tekmetricsApi.get('/appointments', {\n-            headers: { 'Authorization': `Bearer ${authToken}` }\n-        });\n-        return response.data;\n-    } catch (error) {\n-        return `Error listing appointments: ${error.message}`;\n-    }\n-}\n-\n-module.exports = { handleUserInput };\n+        return `Error updating\n"
+                },
+                {
+                    "date": 1718277456915,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -87,5 +87,5 @@\n             headers: { 'Authorization': `Bearer ${authToken}` }\n         });\n         return response.data;\n     } catch (error) {\n-        return `Error updating\n+        return `Error updating vehicle: ${error.message}`;\n"
+                },
+                {
+                    "date": 1718277464709,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -88,4 +88,6 @@\n         });\n         return response.data;\n     } catch (error) {\n         return `Error updating vehicle: ${error.message}`;\n+    }\n+}\n"
+                },
+                {
+                    "date": 1718278361047,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -87,7 +87,31 @@\n             headers: { 'Authorization': `Bearer ${authToken}` }\n         });\n         return response.data;\n     } catch (error) {\n-        return `Error updating vehicle: ${error.message}`;\n+        return `Error updating job status: ${error.message}`;\n     }\n }\n+\n+async function getCustomerDetails(id, authToken) {\n+    try {\n+        const response = await tekmetricsApi.get(`/customers/${id}`, {\n+            headers: { 'Authorization': `Bearer ${authToken}` }\n+        });\n+        return response.data;\n+    } catch (error) {\n+        return `Error fetching customer details: ${error.message}`;\n+    }\n+}\n+\n+async function listAppointments(authToken) {\n+    try {\n+        const response = await tekmetricsApi.get('/appointments', {\n+            headers: { 'Authorization': `Bearer ${authToken}` }\n+        });\n+        return response.data;\n+    } catch (error) {\n+        return `Error listing appointments: ${error.message}`;\n+    }\n+}\n+\n+module.exports = { handleUserInput };\n"
+                },
+                {
+                    "date": 1718282201667,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-const { searchCustomer, createVehicle, tekmetricsApi } = require('../services/tekmetricService');\n+const { getCustomerDetails, createNewVehicle, listAppointments, tekmetricsApi } = require('../services/tekmetricService');\n const { parseCommand } = require('./commandParser');\n \n async function handleUserInput(input, userId, authToken) {\n     const parsedCommand = parseCommand(input);\n@@ -104,14 +104,5 @@\n }\n \n async function listAppointments(authToken) {\n     try {\n-        const response = await tekmetricsApi.get('/appointments', {\n-            headers: { 'Authorization': `Bearer ${authToken}` }\n-        });\n-        return response.data;\n-    } catch (error) {\n-        return `Error listing appointments: ${error.message}`;\n-    }\n-}\n-\n-module.exports = { handleUserInput };\n+        const response = await\n"
+                },
+                {
+                    "date": 1718282212789,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -104,5 +104,14 @@\n }\n \n async function listAppointments(authToken) {\n     try {\n-        const response = await\n+        const response = await tekmetricsApi.get('/appointments', {\n+            headers: { 'Authorization': `Bearer ${authToken}` }\n+        });\n+        return response.data;\n+    } catch (error) {\n+        return `Error listing appointments: ${error.message}`;\n+    }\n+}\n+\n+module.exports = { handleUserInput };\n"
+                },
+                {
+                    "date": 1718282335785,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -91,27 +91,5 @@\n         return `Error updating job status: ${error.message}`;\n     }\n }\n \n-async function getCustomerDetails(id, authToken) {\n-    try {\n-        const response = await tekmetricsApi.get(`/customers/${id}`, {\n-            headers: { 'Authorization': `Bearer ${authToken}` }\n-        });\n-        return response.data;\n-    } catch (error) {\n-        return `Error fetching customer details: ${error.message}`;\n-    }\n-}\n-\n-async function listAppointments(authToken) {\n-    try {\n-        const response = await tekmetricsApi.get('/appointments', {\n-            headers: { 'Authorization': `Bearer ${authToken}` }\n-        });\n-        return response.data;\n-    } catch (error) {\n-        return `Error listing appointments: ${error.message}`;\n-    }\n-}\n-\n module.exports = { handleUserInput };\n"
                 }
             ],
             "date": 1717794863892,

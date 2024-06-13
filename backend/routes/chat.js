@@ -1,16 +1,13 @@
-// backend/routes/chat.js
-
-const { handleUserInput } = require('../services/commandHandler');
-const { OpenAIStream, StreamingTextResponse } = require('ai');
+const { handleUserInput } = require('../utils/chatHandler');
 
 export async function POST(request) {
   const json = await request.json();
-  const { chatSettings, messages, userId } = json;
+  const { chatSettings, messages, userId, authToken } = json;
 
   const lastMessage = messages[messages.length - 1].content;
 
   // Check for commands and handle them
-  const commandResponse = await handleUserInput(lastMessage, userId);
+  const commandResponse = await handleUserInput(lastMessage, userId, authToken);
   if (commandResponse) {
     return new Response(JSON.stringify({ message: commandResponse }), { status: 200 });
   }

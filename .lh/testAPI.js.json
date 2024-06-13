@@ -3,11 +3,23 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 3,
             "patches": [
                 {
                     "date": 1718274099812,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1718277071684,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,14 @@\n+const axios = require('./backend/utils/axiosConfig'); // Adjust path if needed\n+\n+async function testConnection() {\n+    console.log('Starting API Connection Test...');\n+    try {\n+        const response = await axios.get('/customers', { params: { shop: 238, search: 'Jeff', page: 0, size: 100 } });\n+        console.log('API Connection Test Successful:', response.data);\n+    } catch (error) {\n+        console.error('API Connection Test Failed:', error.response ? error.response.data : error.message);\n+    }\n+    console.log('API Connection Test Completed.');\n+}\n+\n+testConnection();\n"
+                },
+                {
+                    "date": 1718282080892,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,28 +1,14 @@\n-const axios = require('./backend/utils/axiosConfig'); // Adjust path if needed\n+const tekmetricsApi = require('./utils/axiosConfig');\n \n async function testConnection() {\n     console.log('Starting API Connection Test...');\n     try {\n-        const response = await axios.get('/customers', { params: { shop: 238, search: 'Jeff', page: 0, size: 100 } });\n+        const response = await tekmetricsApi.get('/customers', { params: { shop: 238, search: 'Jeff', page: 0, size: 100 } });\n         console.log('API Connection Test Successful:', response.data);\n     } catch (error) {\n         console.error('API Connection Test Failed:', error.response ? error.response.data : error.message);\n     }\n     console.log('API Connection Test Completed.');\n }\n \n testConnection();\n-const axios = require('./backend/utils/axiosConfig'); // Adjust path if needed\n-\n-async function testConnection() {\n-    console.log('Starting API Connection Test...');\n-    try {\n-        const response = await axios.get('/customers', { params: { shop: 238, search: 'Jeff', page: 0, size: 100 } });\n-        console.log('API Connection Test Successful:', response.data);\n-    } catch (error) {\n-        console.error('API Connection Test Failed:', error.response ? error.response.data : error.message);\n-    }\n-    console.log('API Connection Test Completed.');\n-}\n-\n-testConnection();\n"
+                },
+                {
+                    "date": 1718282189234,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-const tekmetricsApi = require('./utils/axiosConfig');\n+const tekmetricsApi = require('./backend/utils/axiosConfig'); // Adjust path if needed\n \n async function testConnection() {\n     console.log('Starting API Connection Test...');\n     try {\n"
                 }
             ],
             "date": 1718274099812,

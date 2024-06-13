@@ -1,4 +1,4 @@
-const { searchCustomer, createVehicle, tekmetricsApi } = require('../services/tekmetricService');
+const { getCustomerDetails, createNewVehicle, listAppointments, tekmetricsApi } = require('../services/tekmetricService');
 const { parseCommand } = require('./commandParser');
 
 async function handleUserInput(input, userId, authToken) {
@@ -89,28 +89,6 @@ async function updateJobStatus(details, authToken) {
         return response.data;
     } catch (error) {
         return `Error updating job status: ${error.message}`;
-    }
-}
-
-async function getCustomerDetails(id, authToken) {
-    try {
-        const response = await tekmetricsApi.get(`/customers/${id}`, {
-            headers: { 'Authorization': `Bearer ${authToken}` }
-        });
-        return response.data;
-    } catch (error) {
-        return `Error fetching customer details: ${error.message}`;
-    }
-}
-
-async function listAppointments(authToken) {
-    try {
-        const response = await tekmetricsApi.get('/appointments', {
-            headers: { 'Authorization': `Bearer ${authToken}` }
-        });
-        return response.data;
-    } catch (error) {
-        return `Error listing appointments: ${error.message}`;
     }
 }
 

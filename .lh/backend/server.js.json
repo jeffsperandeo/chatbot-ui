@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 10,
+            "activePatchIndex": 13,
             "patches": [
                 {
                     "date": 1717878815138,
@@ -48,6 +48,18 @@
                 {
                     "date": 1718274791584,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-// backend/server.js\n+// server.js\n const express = require('express');\n const bodyParser = require('body-parser');\n const { createProxyMiddleware } = require('http-proxy-middleware');\n const authRoutes = require('./routes/authRoutes');\n"
+                },
+                {
+                    "date": 1718276418789,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,8 +8,9 @@\n const chatRoutes = require('./routes/chatRoutes');\n const commandRoutes = require('./routes/commandRoutes');\n const { storeContext, getContext } = require('./utils/redisClient');\n const supabase = require('./supabaseclient');\n+const tekmetricService = require('./services/tekmetricService');\n require('dotenv').config();\n \n const app = express();\n const PORT = process.env.PORT || 3002;\n@@ -47,8 +48,36 @@\n         res.status(500).send('Error retrieving context');\n     }\n });\n \n+// Tekmetric API Routes\n+app.get('/api/customers', async (req, res) => {\n+    try {\n+        const customers = await tekmetricService.getCustomerDetails(req.query.search);\n+        res.json(customers);\n+    } catch (error) {\n+        res.status(500).send(error.message);\n+    }\n+});\n+\n+app.post('/api/vehicles', async (req, res) => {\n+    try {\n+        const vehicle = await tekmetricService.createNewVehicle(req.body);\n+        res.json(vehicle);\n+    } catch (error) {\n+        res.status(500).send(error.message);\n+    }\n+});\n+\n+app.get('/api/appointments', async (req, res) => {\n+    try {\n+        const appointments = await tekmetricService.listAppointments(req.headers.authorization);\n+        res.json(appointments);\n+    } catch (error) {\n+        res.status(500).send(error.message);\n+    }\n+});\n+\n // Supabase example endpoint\n app.get('/supabase-example', async (req, res) => {\n     const { data, error } = await supabase\n         .from('your_table')\n"
+                },
+                {
+                    "date": 1718277018570,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-// server.js\n+// backend/server.js\n const express = require('express');\n const bodyParser = require('body-parser');\n const { createProxyMiddleware } = require('http-proxy-middleware');\n const authRoutes = require('./routes/authRoutes');\n@@ -8,9 +8,8 @@\n const chatRoutes = require('./routes/chatRoutes');\n const commandRoutes = require('./routes/commandRoutes');\n const { storeContext, getContext } = require('./utils/redisClient');\n const supabase = require('./supabaseclient');\n-const tekmetricService = require('./services/tekmetricService');\n require('dotenv').config();\n \n const app = express();\n const PORT = process.env.PORT || 3002;\n@@ -48,36 +47,8 @@\n         res.status(500).send('Error retrieving context');\n     }\n });\n \n-// Tekmetric API Routes\n-app.get('/api/customers', async (req, res) => {\n-    try {\n-        const customers = await tekmetricService.getCustomerDetails(req.query.search);\n-        res.json(customers);\n-    } catch (error) {\n-        res.status(500).send(error.message);\n-    }\n-});\n-\n-app.post('/api/vehicles', async (req, res) => {\n-    try {\n-        const vehicle = await tekmetricService.createNewVehicle(req.body);\n-        res.json(vehicle);\n-    } catch (error) {\n-        res.status(500).send(error.message);\n-    }\n-});\n-\n-app.get('/api/appointments', async (req, res) => {\n-    try {\n-        const appointments = await tekmetricService.listAppointments(req.headers.authorization);\n-        res.json(appointments);\n-    } catch (error) {\n-        res.status(500).send(error.message);\n-    }\n-});\n-\n // Supabase example endpoint\n app.get('/supabase-example', async (req, res) => {\n     const { data, error } = await supabase\n         .from('your_table')\n"
+                },
+                {
+                    "date": 1718277410024,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,4 @@\n-// backend/server.js\n const express = require('express');\n const bodyParser = require('body-parser');\n const { createProxyMiddleware } = require('http-proxy-middleware');\n const authRoutes = require('./routes/authRoutes');\n"
                 }
             ],
             "date": 1717878815138,

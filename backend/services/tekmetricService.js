@@ -1,4 +1,3 @@
-// tekmetricService.js
 const axios = require('axios');
 require('dotenv').config();
 
@@ -57,4 +56,4 @@ async function listAppointments(authToken) {
     }
 }
 
-module.exports = { getCustomerDetails, createNewVehicle, listAppointments };
+module.exports = { getCustomerDetails, createNewVehicle, listAppointments, tekmetricsApi };
