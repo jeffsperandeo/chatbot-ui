@@ -1,0 +1,18 @@
+{
+    "sourceFile": "db/index.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1718134188569,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1718134188569,
+            "name": "Commit-0",
+            "content": "import \"./assistants\"\nimport \"./chats\"\nimport \"./file-items\"\nimport \"./files\"\nimport \"./folders\"\nimport \"./messages\"\nimport \"./presets\"\nimport \"./profile\"\nimport \"./prompts\"\nimport \"./workspaces\"\n"
+        }
+    ]
+}

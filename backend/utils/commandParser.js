@@ -1,4 +1,3 @@
-// backend/utils/commandParser.js
 function parseCommand(input) {
     const commandMappings = {
         "Get vehicle details for VIN": "GET /tekmetrics/vehicles",
@@ -12,12 +11,12 @@ function parseCommand(input) {
 
     for (const [command, endpoint] of Object.entries(commandMappings)) {
         if (input.startsWith(command)) {
-            console.log(`Command recognized: ${command}`); // Add this line
+            console.log(`Command recognized: ${command}`);
             return { command, endpoint, details: input.replace(command, '').trim() };
         }
     }
 
-    console.log(`Command not recognized: ${input}`); // Add this line
+    console.log(`Command not recognized: ${input}`);
     return null;
 }
 

@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 7,
+            "activePatchIndex": 9,
             "patches": [
                 {
                     "date": 1717878815138,
@@ -36,6 +36,14 @@
                 {
                     "date": 1718025476220,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n // backend/server.js\n const express = require('express');\n const bodyParser = require('body-parser');\n const { createProxyMiddleware } = require('http-proxy-middleware');\n-const authRoutes = require('./routes/authRoutes'); // Ensure this path is correct\n+const authRoutes = require('./routes/authRoutes');\n const dataRoutes = require('./routes/dataRoutes');\n const assistantsRoutes = require('./routes/assistantsRoutes');\n const chatRoutes = require('./routes/chatRoutes');\n const commandRoutes = require('./routes/commandRoutes');\n@@ -13,10 +13,10 @@\n const app = express();\n const PORT = process.env.PORT || 3002;\n \n app.use(bodyParser.json());\n-app.use('/api/auth', authRoutes); // Ensure this line exists and points to authRoutes\n-app.use('/api', dataRoutes); // Ensure this line exists and points to dataRoutes\n+app.use('/api/auth', authRoutes);\n+app.use('/api', dataRoutes);\n app.use('/assistants', assistantsRoutes);\n app.use('/chat', chatRoutes);\n app.use('/command', commandRoutes);\n \n"
+                },
+                {
+                    "date": 1718052742272,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,8 +7,9 @@\n const assistantsRoutes = require('./routes/assistantsRoutes');\n const chatRoutes = require('./routes/chatRoutes');\n const commandRoutes = require('./routes/commandRoutes');\n const { storeContext, getContext } = require('./utils/redisClient');\n+const supabase = require('./supabaseClient');\n require('dotenv').config();\n \n const app = express();\n const PORT = process.env.PORT || 3002;\n@@ -46,27 +47,18 @@\n         res.status(500).send('Error retrieving context');\n     }\n });\n \n-// Test route for checking Redis storage\n-app.post('/test-store-context', async (req, res) => {\n-    const { userId, context } = req.body;\n-    try {\n-        await storeContext(userId, context);\n-        res.status(200).send('Context stored successfully');\n-    } catch (err) {\n-        res.status(500).send('Error storing context');\n-    }\n-});\n+// Supabase example endpoint\n+app.get('/supabase-example', async (req, res) => {\n+    const { data, error } = await supabase\n+        .from('your_table')\n+        .select('*');\n \n-// Test route for checking Redis retrieval\n-app.get('/test-get-context/:userId', async (req, res) => {\n-    const userId = req.params.userId;\n-    try {\n-        const context = await getContext(userId);\n-        res.status(200).json(context);\n-    } catch (err) {\n-        res.status(500).send('Error retrieving context');\n+    if (error) {\n+        res.status(500).send(error.message);\n+    } else {\n+        res.status(200).json(data);\n     }\n });\n \n app.listen(PORT, () => {\n"
+                },
+                {
+                    "date": 1718053605493,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,9 +7,9 @@\n const assistantsRoutes = require('./routes/assistantsRoutes');\n const chatRoutes = require('./routes/chatRoutes');\n const commandRoutes = require('./routes/commandRoutes');\n const { storeContext, getContext } = require('./utils/redisClient');\n-const supabase = require('./supabaseClient');\n+const supabase = require('./supabaseclient');\n require('dotenv').config();\n \n const app = express();\n const PORT = process.env.PORT || 3002;\n"
                 }
             ],
             "date": 1717878815138,

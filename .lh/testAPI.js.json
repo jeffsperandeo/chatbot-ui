@@ -1,0 +1,18 @@
+{
+    "sourceFile": "testAPI.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1718274099812,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1718274099812,
+            "name": "Commit-0",
+            "content": "const axios = require('./backend/utils/axiosConfig'); // Adjust path if needed\n\nasync function testConnection() {\n    console.log('Starting API Connection Test...');\n    try {\n        const response = await axios.get('/customers', { params: { shop: 238, search: 'Jeff', page: 0, size: 100 } });\n        console.log('API Connection Test Successful:', response.data);\n    } catch (error) {\n        console.error('API Connection Test Failed:', error.response ? error.response.data : error.message);\n    }\n    console.log('API Connection Test Completed.');\n}\n\ntestConnection();\n"
+        }
+    ]
+}

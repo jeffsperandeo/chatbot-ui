@@ -1,0 +1,18 @@
+{
+    "sourceFile": "app/api/keys/route.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1718133890607,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1718133890607,
+            "name": "Commit-0",
+            "content": "import { isUsingEnvironmentKey } from \"@/lib/envs\"\nimport { createResponse } from \"@/lib/server/server-utils\"\nimport { EnvKey } from \"@/types/key-type\"\nimport { VALID_ENV_KEYS } from \"@/types/valid-keys\"\n\nexport async function GET() {\n  const envKeyMap: Record<string, VALID_ENV_KEYS> = {\n    azure: VALID_ENV_KEYS.AZURE_OPENAI_API_KEY,\n    openai: VALID_ENV_KEYS.OPENAI_API_KEY,\n    google: VALID_ENV_KEYS.GOOGLE_GEMINI_API_KEY,\n    anthropic: VALID_ENV_KEYS.ANTHROPIC_API_KEY,\n    mistral: VALID_ENV_KEYS.MISTRAL_API_KEY,\n    groq: VALID_ENV_KEYS.GROQ_API_KEY,\n    perplexity: VALID_ENV_KEYS.PERPLEXITY_API_KEY,\n    openrouter: VALID_ENV_KEYS.OPENROUTER_API_KEY,\n\n    openai_organization_id: VALID_ENV_KEYS.OPENAI_ORGANIZATION_ID,\n\n    azure_openai_endpoint: VALID_ENV_KEYS.AZURE_OPENAI_ENDPOINT,\n    azure_gpt_35_turbo_name: VALID_ENV_KEYS.AZURE_GPT_35_TURBO_NAME,\n    azure_gpt_45_vision_name: VALID_ENV_KEYS.AZURE_GPT_45_VISION_NAME,\n    azure_gpt_45_turbo_name: VALID_ENV_KEYS.AZURE_GPT_45_TURBO_NAME,\n    azure_embeddings_name: VALID_ENV_KEYS.AZURE_EMBEDDINGS_NAME\n  }\n\n  const isUsingEnvKeyMap = Object.keys(envKeyMap).reduce<\n    Record<string, boolean>\n  >((acc, provider) => {\n    const key = envKeyMap[provider]\n\n    if (key) {\n      acc[provider] = isUsingEnvironmentKey(key as EnvKey)\n    }\n    return acc\n  }, {})\n\n  return createResponse({ isUsingEnvKeyMap }, 200)\n}\n"
+        }
+    ]
+}
