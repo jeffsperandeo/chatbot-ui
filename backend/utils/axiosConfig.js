@@ -2,13 +2,11 @@
 const axios = require('axios');
 require('dotenv').config();
 
-const apiUrl = process.env.TEKMETRIC_API_URL;
-const apiKey = process.env.TEKMETRIC_API_KEY;
+const apiUrl = 'http://127.0.0.1:5000'; // Flask app URL
 
 const tekmetricsApi = axios.create({
     baseURL: apiUrl,
     headers: {
-        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
     }
 });

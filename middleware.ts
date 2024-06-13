@@ -1,3 +1,4 @@
+// middleware.ts
 import { createClient } from "@/lib/supabase/middleware"
 import { i18nRouter } from "next-i18n-router"
 import { NextResponse, type NextRequest } from "next/server"

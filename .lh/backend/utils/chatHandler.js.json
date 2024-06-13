@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 25,
+            "activePatchIndex": 30,
             "patches": [
                 {
                     "date": 1717794863892,
@@ -108,6 +108,26 @@
                 {
                     "date": 1718282335785,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -91,27 +91,5 @@\n         return `Error updating job status: ${error.message}`;\n     }\n }\n \n-async function getCustomerDetails(id, authToken) {\n-    try {\n-        const response = await tekmetricsApi.get(`/customers/${id}`, {\n-            headers: { 'Authorization': `Bearer ${authToken}` }\n-        });\n-        return response.data;\n-    } catch (error) {\n-        return `Error fetching customer details: ${error.message}`;\n-    }\n-}\n-\n-async function listAppointments(authToken) {\n-    try {\n-        const response = await tekmetricsApi.get('/appointments', {\n-            headers: { 'Authorization': `Bearer ${authToken}` }\n-        });\n-        return response.data;\n-    } catch (error) {\n-        return `Error listing appointments: ${error.message}`;\n-    }\n-}\n-\n module.exports = { handleUserInput };\n"
+                },
+                {
+                    "date": 1718282953565,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,5 @@\n+// backend/utils/chatHandler.js\n const { getCustomerDetails, createNewVehicle, listAppointments, tekmetricsApi } = require('../services/tekmetricService');\n const { parseCommand } = require('./commandParser');\n \n async function handleUserInput(input, userId, authToken) {\n@@ -30,9 +31,8 @@\n         return \"I'm sorry, I don't understand that command.\";\n     }\n }\n \n-// Define API call functions\n async function getVehicleDetails(vin, authToken) {\n     try {\n         const response = await tekmetricsApi.get('/vehicles', {\n             params: { vin },\n"
+                },
+                {
+                    "date": 1718283630394,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,4 @@\n-// backend/utils/chatHandler.js\n const { getCustomerDetails, createNewVehicle, listAppointments, tekmetricsApi } = require('../services/tekmetricService');\n const { parseCommand } = require('./commandParser');\n \n async function handleUserInput(input, userId, authToken) {\n@@ -31,8 +30,9 @@\n         return \"I'm sorry, I don't understand that command.\";\n     }\n }\n \n+// Define API call functions\n async function getVehicleDetails(vin, authToken) {\n     try {\n         const response = await tekmetricsApi.get('/vehicles', {\n             params: { vin },\n"
+                },
+                {
+                    "date": 1718283654665,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,5 @@\n+// backend/utils/chatHandler.js\n const { getCustomerDetails, createNewVehicle, listAppointments, tekmetricsApi } = require('../services/tekmetricService');\n const { parseCommand } = require('./commandParser');\n \n async function handleUserInput(input, userId, authToken) {\n@@ -30,9 +31,8 @@\n         return \"I'm sorry, I don't understand that command.\";\n     }\n }\n \n-// Define API call functions\n async function getVehicleDetails(vin, authToken) {\n     try {\n         const response = await tekmetricsApi.get('/vehicles', {\n             params: { vin },\n"
+                },
+                {
+                    "date": 1718286158998,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,4 @@\n-// backend/utils/chatHandler.js\n const { getCustomerDetails, createNewVehicle, listAppointments, tekmetricsApi } = require('../services/tekmetricService');\n const { parseCommand } = require('./commandParser');\n \n async function handleUserInput(input, userId, authToken) {\n@@ -31,8 +30,9 @@\n         return \"I'm sorry, I don't understand that command.\";\n     }\n }\n \n+// Define API call functions\n async function getVehicleDetails(vin, authToken) {\n     try {\n         const response = await tekmetricsApi.get('/vehicles', {\n             params: { vin },\n"
+                },
+                {
+                    "date": 1718289067762,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,9 +33,9 @@\n \n // Define API call functions\n async function getVehicleDetails(vin, authToken) {\n     try {\n-        const response = await tekmetricsApi.get('/vehicles', {\n+        const response = await tekmetricsApi.get('/search_vehicle', {\n             params: { vin },\n             headers: { 'Authorization': `Bearer ${authToken}` }\n         });\n         return response.data;\n"
                 }
             ],
             "date": 1717794863892,

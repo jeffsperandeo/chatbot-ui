@@ -34,7 +34,7 @@ async function handleUserInput(input, userId, authToken) {
 // Define API call functions
 async function getVehicleDetails(vin, authToken) {
     try {
-        const response = await tekmetricsApi.get('/vehicles', {
+        const response = await tekmetricsApi.get('/search_vehicle', {
             params: { vin },
             headers: { 'Authorization': `Bearer ${authToken}` }
         });

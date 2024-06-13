@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 8,
+            "activePatchIndex": 9,
             "patches": [
                 {
                     "date": 1717786483876,
@@ -40,6 +40,10 @@
                 {
                     "date": 1718274073389,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,14 +10,14 @@\n     };\n \n     for (const [command, endpoint] of Object.entries(commandMappings)) {\n         if (input.startsWith(command)) {\n-            console.log(`Command recognized: ${command}`); // Add this line\n+            console.log(`Command recognized: ${command}`);\n             return { command, endpoint, details: input.replace(command, '').trim() };\n         }\n     }\n \n-    console.log(`Command not recognized: ${input}`); // Add this line\n+    console.log(`Command not recognized: ${input}`);\n     return null;\n }\n \n module.exports = { parseCommand };\n"
+                },
+                {
+                    "date": 1718283384456,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,23 +1,15 @@\n+// backend/utils/commandParser.js\n function parseCommand(input) {\n-    const commandMappings = {\n-        \"Get vehicle details for VIN\": \"GET /tekmetrics/vehicles\",\n-        \"Add a new vehicle with details\": \"POST /tekmetrics/vehicles\",\n-        \"Update vehicle with ID\": \"PATCH /tekmetrics/vehicles/{id}\",\n-        \"List all jobs in the shop\": \"GET /tekmetrics/jobs\",\n-        \"Change status of job ID\": \"PATCH /tekmetrics/jobs/{id}\",\n-        \"Get customer details for ID\": \"GET /tekmetrics/customers\",\n-        \"What are my appointments today?\": \"GET /tekmetrics/appointments\"\n-    };\n+    const commandRegex = /^(Get vehicle details for VIN|Add a new vehicle with details|Update vehicle with ID|List all jobs in the shop|Change status of job ID|Get customer details for ID|What are my appointments today?) (.+)$/;\n+    const match = input.match(commandRegex);\n \n-    for (const [command, endpoint] of Object.entries(commandMappings)) {\n-        if (input.startsWith(command)) {\n-            console.log(`Command recognized: ${command}`);\n-            return { command, endpoint, details: input.replace(command, '').trim() };\n-        }\n+    if (match) {\n+        return {\n+            command: match[1],\n+            details: match[2]\n+        };\n     }\n-\n-    console.log(`Command not recognized: ${input}`);\n     return null;\n }\n \n module.exports = { parseCommand };\n"
                 }
             ],
             "date": 1717786483876,
